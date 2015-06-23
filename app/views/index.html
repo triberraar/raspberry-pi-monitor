@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        io = io.connect();
+
+        // Emit ready event.
+        io.emit('client-talk', {message: 'content'});
+        // Listen for the talk event.
+        io.on('server-respond', function(data) {
+            console.log('response: ' + JSON.stringify(data));
+        });
+
+        io.on('server-broad', function(data) {
+            console.log('server-broad: ' + JSON.stringify(data));
+        });
+
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>
