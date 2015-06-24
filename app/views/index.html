@@ -5,24 +5,17 @@
     <title></title>
 
     <script src="lib/socket.io-client/socket.io.js"></script>
-    <script>
-        io = io.connect();
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-socket-io/socket.js"></script>
 
-        // Emit ready event.
-        io.emit('client-talk', {message: 'content'});
-        // Listen for the talk event.
-        io.on('server-respond', function(data) {
-            console.log('response: ' + JSON.stringify(data));
-        });
-
-        io.on('server-broad', function(data) {
-            console.log('server-broad: ' + JSON.stringify(data));
-        });
-
-    </script>
+    <script src="js/raspberry-pi-monitor-app.js"></script>
+    <script src="js/test.js"></script>
 
 </head>
-<body>
-
+<body ng-app="raspberryPiMonitorApp">
+    <div ng-controller="TestController as testCtrl">
+        {{testCtrl.test}} <br>
+        {{testCtrl.message}}
+    </div>
 </body>
 </html>
