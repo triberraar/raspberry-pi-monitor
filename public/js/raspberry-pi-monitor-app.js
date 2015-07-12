@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('raspberryPiMonitorApp', [
     'btford.socket-io',
     'test'

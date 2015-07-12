@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
@@ -27,4 +29,3 @@ setInterval(function() {
     console.log('doing a socket');
     io.emit('server-broad', { message: 'broad' });
 }, 1000);
-

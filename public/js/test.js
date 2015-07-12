@@ -1,8 +1,10 @@
+'use strict';
+
 angular.module('test', [])
 .controller('TestController', function(socket) {
         var _this = this;
 
-        this.test = "test";
+        this.test = 'test';
         this.counter = 0;
 
         // Emit ready event.
@@ -14,7 +16,7 @@ angular.module('test', [])
 
         socket.on('server-broad', function(data) {
             console.log('server-broad: ' + JSON.stringify(data));
-            _this.message = data.message + " " + _this.counter;
+            _this.message = data.message + ' ' + _this.counter;
             _this.counter ++;
         });
 
