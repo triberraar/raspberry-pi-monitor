@@ -1,0 +1,16 @@
+{
+  "name": "raspberry-pi-monitor",
+  "version": "0.0.1",
+  "homepage": "https://github.com/triberraar/raspberry-pi-monitor",
+  "authors": [
+    "Geert 'triberraar' Olaerts"
+  ],
+  "description": "app to monitor raspberry pi",
+  "main": "server.js",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1.4.1",
+    "angular-socket-io": "~0.7.0",
+    "socket.io-client": "~1.3.5"
+  }
+}
