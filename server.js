@@ -6,6 +6,8 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var _ = require('lodash');
 
+var cpuInfo = require('./app/controllers/cpu');
+
 var sockets = [];
 
 server.listen(7076);
@@ -17,15 +19,13 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function (socket) {
-    sockets.push(socket);
-
-    socket.on('client-talk', function (data) {
-        console.log('client-talk: ' + JSON.stringify(data) );
-        socket.emit('server-respond', { hello: 'world' });
+    cpuInfo.getCpuInfo(function(cpuInfo) {
+       socket.emit('cpu', cpuInfo);
     });
 });
 
 setInterval(function() {
-    console.log('doing a socket');
-    io.emit('server-broad', { message: 'broad' });
-}, 1000);
+    cpuInfo.getCpuInfo(function(cpuInfo) {
+        io.emit('cpu', cpuInfo);
+    });
+}, 2500);
