@@ -27,6 +27,7 @@ var processProcesses = function(processesBlob, callback) {
     processes.splice(0,1);
 
      var result = _.sortBy(_.map(processes, function(process){
+         console.log(process);
         var splitted = process.trim().split(/[\s,]+/);
         return {cpu: parseFloat(splitted[0]), command: splitted[1]};
     }), 'cpu')
