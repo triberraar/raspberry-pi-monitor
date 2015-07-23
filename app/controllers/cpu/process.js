@@ -5,7 +5,7 @@ var _ = require('lodash');
 var async = require('async');
 
 var queryProcesses = function(callback) {
-    var ps = spawn('ps', ['-eo %cpu,args']),
+    var ps = spawn('ps', ['-eo \%cpu,args']),
         buffer = '';
 
     ps.stdout.on('data', function (data) {
@@ -28,7 +28,7 @@ var processProcesses = function(processesBlob, callback) {
 
     console.log(processesBlob);
      var result = _.sortBy(_.map(processes, function(process){
-       
+
         var splitted = process.trim().split(/[\s,]+/);
         return {cpu: parseFloat(splitted[0]), command: splitted[1]};
     }), 'cpu')
