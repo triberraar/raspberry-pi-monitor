@@ -26,6 +26,7 @@ var processProcesses = function(processesBlob, callback) {
     var processes = processesBlob.trim().split('\n');
     processes.splice(0,1);
 
+    console.log(processesBlob);
      var result = _.sortBy(_.map(processes, function(process){
          console.log(process);
         var splitted = process.trim().split(/[\s,]+/);
