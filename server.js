@@ -6,7 +6,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var _ = require('lodash');
 
-var cpuInfo = require('./app/controllers/cpu');
+var cpuInfo = require('./app/controllers/cpu/cpu');
 
 var sockets = [];
 
