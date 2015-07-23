@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('raspberryPiMonitorApp', [
+angular.module('triberraarPiMonitorApp', [
     'btford.socket-io',
     'test'
 ]).
