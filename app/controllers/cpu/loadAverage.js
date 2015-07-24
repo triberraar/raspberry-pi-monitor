@@ -19,13 +19,13 @@ var processLoadAvg = function(data, callback) {
     callback(null, {'1min': splittedData[0], '5min': splittedData[1], '15min': splittedData[2]});
 };
 
-exports.getLoadAvg = function(callback) {
+exports.getLoadAverage = function(callback) {
     async.waterfall([
         readFile,
         processLoadAvg
     ], function(err, result){
         if(err) {
-            console.error('getLoadAvg failed: ', err);
+            console.error('getLoadAverage failed: ', err);
         } else {
             callback(null, result);
         }

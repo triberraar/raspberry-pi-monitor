@@ -1,18 +1,21 @@
 'use strict';
 
-var spawn = require('child_process').spawn;
-var _ = require('lodash');
-var async = require('async');
-var loadAvg = require('./loadavg');
+var spawn = require('child_process').spawn,
+    _ = require('lodash'),
+    async = require('async'),
+    loadAverage = require('./loadAverage'),
+    frequency = require('./frequency');
 
 var getCpuInfo = function(callback) {
     async.parallel(
-        [loadAvg.getLoadAvg
-            ], function (err, results) {
+        [
+            loadAverage.getLoadAverage,
+            frequency.getCurrentFrequency
+        ], function (err, results) {
             if(err) {
                 console.error('error' + err);
             } else {
-                callback( {loadAvg: results[0]});
+                callback( {loadAvg: results[0], frequency: results[1]});
             }
         }
     );
