@@ -1,21 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
 
-    <script src="lib/socket.io-client/socket.io.js"></script>
-    <script src="lib/angular/angular.js"></script>
-    <script src="lib/angular-socket-io/socket.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/flatly/bootstrap.min.css" />
+        <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css"/>
+        <link rel="stylesheet" href="css/style.css"/>
 
-    <script src="js/triberraar-pi-monitor-app.js"></script>
-    <script src="js/test.js"></script>
+        <script src="lib/socket.io-client/socket.io.js"></script>
+        <script src="lib/angular/angular.js"></script>
+        <script src="lib/angular-socket-io/socket.js"></script>
+        <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
 
-</head>
-<body ng-app="triberraarPiMonitorApp">
-    <div ng-controller="TestController as testCtrl">
-        {{testCtrl.test}} <br>
-        {{testCtrl.message}}
-    </div>
-</body>
+        <script src="triberraar-pi-monitor-app.js"></script>
+        <script src="js/test.js"></script>
+        <script src="components/dashboard/dashboard.js"></script>
+        <script src="components/cpu/cpu.js"></script>
+
+    </head>
+    <body ng-app="triberraarPiMonitorApp">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <ul class="nav nav-sidebar">
+                        <li ui-sref-active="active"><a ui-sref="dashboard">Dashboard</a></li>
+                        <li ui-sref-active="active"><a ui-sref="uptime">Uptime</a></li>
+                        <li ui-sref-active="active"><a ui-sref="cpu">Cpu</a></li>
+                        <li ui-sref-active="active"><a ui-sref="memory">Memory</a></li>
+                        <li ui-sref-active="active"><a ui-sref="network">Network</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <div ui-view></div>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
