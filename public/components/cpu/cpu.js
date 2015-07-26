@@ -23,21 +23,28 @@ angular.module('cpu', [
             _refreshInterval = refreshInterval;
             if(timeout) {
                 $timeout.cancel(timeout);
-                timeout = $timeout(requery, _refreshInterval);
+                if(_refreshInterval) {
+                    timeout = $timeout(requery, _refreshInterval);
+                }
             }
         };
 
+        var _getData = function(numberOfLatestEntries) {
+            if(!numberOfLatestEntries || _cpuData.length <= numberOfLatestEntries) {
+                return _cpuData;
+            }
+            return _cpuData.slice(_cpuData.length - numberOfLatestEntries);
+        };
+
         function requery() {
-            socket.emit("cpu")
+            socket.emit('cpu')
         }
 
         socket.on('cpu', function(data){
-            console.log('cpu: ' + JSON.stringify(data));
             _cpuData.push({time: moment(), data: data});
-            if(_cpuData.length > 5) {
-                _cpuData = _cpuData.slice(1, 6);
+            if(_refreshInterval) {
+                timeout = $timeout(requery, _refreshInterval);
             }
-            timeout = $timeout(requery, _refreshInterval);
         });
 
         requery();
@@ -46,7 +53,7 @@ angular.module('cpu', [
             setRefreshInterval : _setRefreshInterval,
             getRefreshInterval: function() { return _refreshInterval;},
             getLatest: function() { return _cpuData[_cpuData.length -1];},
-            getData: function() { return _cpuData; }
+            getData: _getData
         }
     })
     .controller('CpuController', function($state, cpuDataService){
@@ -54,17 +61,17 @@ angular.module('cpu', [
 
         function init() {
             _this.refreshIntervals = [
-                {caption: "second", value: 1000},
-                {caption: "5 seconds", value: 5000},
-                {caption: "15 seconds", value: 15000},
-                {caption: "30 seconds", value: 30000},
-                {caption: "minute", value: 60000},
-                {caption: "5 minutes", value: 300000},
-                {caption: "15 minutes", value: 900000}
+                {caption: 'second', value: 1000},
+                {caption: '5 seconds', value: 5000},
+                {caption: '15 seconds', value: 15000},
+                {caption: '30 seconds', value: 30000},
+                {caption: 'minute', value: 60000},
+                {caption: '5 minutes', value: 300000},
+                {caption: '15 minutes', value: 900000},
+                {caption: 'Not', value: undefined}
             ];
             _this.refreshInterval=_this.refreshIntervals[1];
             cpuDataService.setRefreshInterval( _this.refreshInterval.value);
-
         }
 
         _this.refreshIntervalChanged = function() {
@@ -82,24 +89,36 @@ angular.module('cpu', [
     .controller('CpuHistoryController', function($scope, _, moment, cpuDataService) {
         var _this = this;
 
-        $scope.$watch(cpuDataService.getData, function(value) {
-            console.log('changed');
-            _this.labels = _.pluck(cpuDataService.getData(), 'time').map(function(value) {
-                return value.format("DD/MM/YYYY, HH:mm:ss")
+        function init() {
+            _this.labels = [];
+            _this.data = [
+                []
+            ];
+            _this.series = ['1min', '5min', '15min'];
+            _this.options = {animation: false};
+
+            _this.numberOfEntriesList = [
+                {caption: '5', value: 5},
+                {caption: '10', value: 10},
+                {caption: '15', value: 15},
+                {caption: 'all', value: undefined}
+            ];
+            _this.numberOfEntries=_this.numberOfEntriesList[1];
+        }
+
+        function updateData() {
+            _this.labels = _.pluck(cpuDataService.getData(_this.numberOfEntries.value), 'time').map(function(value) {
+                return value.format('DD/MM/YYYY, HH:mm:ss')
             });
             _this.data = [
-                _.pluck(cpuDataService.getData(), 'data.loadAvg.1min'),
-                _.pluck(cpuDataService.getData(), 'data.loadAvg.5min'),
-                _.pluck(cpuDataService.getData(), 'data.loadAvg.15min')];
-        }, true);
+                _.pluck(cpuDataService.getData(_this.numberOfEntries.value), 'data.loadAvg.1min'),
+                _.pluck(cpuDataService.getData(_this.numberOfEntries.value), 'data.loadAvg.5min'),
+                _.pluck(cpuDataService.getData(_this.numberOfEntries.value), 'data.loadAvg.15min')];
+        }
 
-        _this.labels = [];
-        _this.data = [
-            []
-        ];
-        _this.onClick = function (points, evt) {
-            console.log(points, evt);
-        };
+        $scope.$watch(cpuDataService.getData, function() {
+            updateData();
+        }, true);
 
         _this.getLabels = function() {
             return _this.labels;
@@ -109,7 +128,9 @@ angular.module('cpu', [
             return _this.data;
         };
 
-        _this.series = ['1min', '5min', '15min'];
+        _this.updateNumberOfEntries = function() {
+            updateData();
+        };
 
-        _this.options = {animation: false};
+        init();
     });
