@@ -7,6 +7,7 @@ var io = require('socket.io')(server);
 var _ = require('lodash');
 
 var cpuInfo = require('./app/controllers/cpu/cpu');
+var memory = require('./app/controllers/memory/memory');
 
 var sockets = [];
 
@@ -24,4 +25,10 @@ io.on('connection', function (socket) {
             socket.emit('cpu', cpuInfo);
         });
     });
+
+    socket.on('memory', function() {
+        memory.getMemory(function(memoryData) {
+            socket.emit('memory', memoryData);
+        })
+    })
 });
