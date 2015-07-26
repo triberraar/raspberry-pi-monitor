@@ -17,14 +17,15 @@ angular.module('cpu', [
     .factory('cpuDataService', function($timeout, socket, moment){
         var _refreshInterval;
         var _cpuData = [];
-        var timeout;
+        var _timeout;
+        var _paused = false;
 
         var _setRefreshInterval = function(refreshInterval) {
             _refreshInterval = refreshInterval;
-            if(timeout) {
-                $timeout.cancel(timeout);
-                if(_refreshInterval) {
-                    timeout = $timeout(requery, _refreshInterval);
+            if(_timeout) {
+                $timeout.cancel(_timeout);
+                if(!_paused) {
+                    _timeout = $timeout(requery, _refreshInterval);
                 }
             }
         };
@@ -36,14 +37,26 @@ angular.module('cpu', [
             return _cpuData.slice(_cpuData.length - numberOfLatestEntries);
         };
 
+        var _pause = function() {
+            _paused = true;
+            if(_timeout) {
+                $timeout.cancel(_timeout);
+            }
+        };
+
+        var _play = function() {
+            _paused = false;
+            requery();
+        };
+
         function requery() {
             socket.emit('cpu')
-        }
+        };
 
         socket.on('cpu', function(data){
             _cpuData.push({time: moment(), data: data});
-            if(_refreshInterval) {
-                timeout = $timeout(requery, _refreshInterval);
+            if(!_paused) {
+                _timeout = $timeout(requery, _refreshInterval);
             }
         });
 
@@ -51,9 +64,10 @@ angular.module('cpu', [
 
         return {
             setRefreshInterval : _setRefreshInterval,
-            getRefreshInterval: function() { return _refreshInterval;},
             getLatest: function() { return _cpuData[_cpuData.length -1];},
-            getData: _getData
+            getData: _getData,
+            pause: _pause,
+            play: _play
         }
     })
     .controller('CpuController', function($state, cpuDataService){
@@ -67,8 +81,7 @@ angular.module('cpu', [
                 {caption: '30 seconds', value: 30000},
                 {caption: 'minute', value: 60000},
                 {caption: '5 minutes', value: 300000},
-                {caption: '15 minutes', value: 900000},
-                {caption: 'Not', value: undefined}
+                {caption: '15 minutes', value: 900000}
             ];
             _this.refreshInterval=_this.refreshIntervals[1];
             cpuDataService.setRefreshInterval( _this.refreshInterval.value);
@@ -79,6 +92,9 @@ angular.module('cpu', [
         };
 
         _this.getLatest = cpuDataService.getLatest;
+
+        _this.play = cpuDataService.play;
+        _this.pause = cpuDataService.pause;
 
         _this.navigateToHistoryShown = function() {
             return $state.$current.name != 'cpu.history';
