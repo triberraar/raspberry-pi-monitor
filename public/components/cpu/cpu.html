@@ -3,32 +3,24 @@
     <form class="form-horizontal">
         <div class="form-group">
             <label class="col-sm-2 control-label">Refresh every</label>
-            <div class="col-sm-10">
-                <select class="form-control" ng-model="cpuController.refreshInterval" ng-options="item.caption for item in cpuController.refresIntervals" ng-change="cpuController.refreshIntervalChanged()">
-                    <option value="1000">second</option>
-                    <option value="5000">5 seconds</option>
-                    <option value="15000">15 seconds</option>
-                    <option value="30000">30 seconds</option>
-                    <option value="60000">minute</option>
-                    <option value="300000">5 minutes</option>
-                    <option value="900000">15 minutes</option>
+            <div class="col-sm-3">
+                <select class="form-control" ng-model="cpuController.refreshInterval" ng-options="item.caption for item in cpuController.refreshIntervals" ng-change="cpuController.refreshIntervalChanged()">
+
                 </select>
             </div>
         </div>
     </form>
-    <h3>Load average</h3>
+    <h4>Load average</h4>
     <form class="form-horizontal">
         <div class="form-group">
             <div class="row">
-                <label class="col-sm-2 control-label">1 min: <span class="badge">{{cpuController.cpuInfo.loadAvg['1min']}}</span></label>
-            </div>
-            <div class="row">
-                <label class="col-sm-2 control-label">5 min: <span class="badge">{{cpuController.cpuInfo.loadAvg['5min']}}</span></label>
-            </div>
-            <div class="row">
-                <label class="col-sm-2 control-label">15 min: <span class="badge">{{cpuController.cpuInfo.loadAvg['15min']}}</span></label>
+                <label class="col-sm-2 control-label">1 min: <span class="badge">{{cpuController.getLatest().data.loadAvg['1min']}}</span></label>
+                <label class="col-sm-2 control-label">5 min: <span class="badge">{{cpuController.getLatest().data.loadAvg['5min']}}</span></label>
+                <label class="col-sm-2 control-label">15 min: <span class="badge">{{cpuController.getLatest().data.loadAvg['15min']}}</span></label>
             </div>
         </div>
     </form>
+    <h4>Frequency <span class="label label-info">{{cpuController.getLatest().data.frequency}}MHz</span></h4>
+    <a ng-show="cpuController.navigateToHistoryShown()" class="btn btn-primary" ui-sref="cpu.history" role="button">To history</a>
     <div ui-view></div>
 </div>
