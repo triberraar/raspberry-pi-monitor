@@ -1,0 +1,30 @@
+<div ng-controller="CpuController as cpuController">
+    <h2>Cpu</h2>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Refresh every</label>
+            <div class="col-sm-3">
+                <select class="form-control" ng-model="cpuController.refreshInterval" ng-options="item.caption for item in cpuController.refreshIntervals" ng-change="cpuController.refreshIntervalChanged()">
+
+                </select>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-default" ng-click="cpuController.pause()"><i class="fa fa-pause"></i></button>
+                <button class="btn btn-default" ng-click="cpuController.play()"><i class="fa fa-play"></i></button>
+            </div>
+        </div>
+    </form>
+    <h4>Load average</h4>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-2 control-label">1 min: <span class="badge">{{cpuController.getLatest().data.loadAvg['1min']}}</span></label>
+                <label class="col-sm-2 control-label">5 min: <span class="badge">{{cpuController.getLatest().data.loadAvg['5min']}}</span></label>
+                <label class="col-sm-2 control-label">15 min: <span class="badge">{{cpuController.getLatest().data.loadAvg['15min']}}</span></label>
+            </div>
+        </div>
+    </form>
+    <h4>Frequency <span class="label label-info">{{cpuController.getLatest().data.frequency}}MHz</span></h4>
+    <a ng-show="cpuController.navigateToHistoryShown()" class="btn btn-primary" ui-sref="cpu.history" role="button">To history</a>
+    <div ui-view></div>
+</div>

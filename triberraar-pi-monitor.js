@@ -19,13 +19,9 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function (socket) {
-    cpuInfo.getCpuInfo(function(cpuInfo) {
-       socket.emit('cpu', cpuInfo);
+    socket.on('cpu', function() {
+        cpuInfo.getCpuInfo(function(cpuInfo) {
+            socket.emit('cpu', cpuInfo);
+        });
     });
 });
-
-setInterval(function() {
-    cpuInfo.getCpuInfo(function(cpuInfo) {
-        io.emit('cpu', cpuInfo);
-    });
-}, 2500);
