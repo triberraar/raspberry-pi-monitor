@@ -9,7 +9,7 @@ var readRX = function(callback) {
             console.error('reading rx failed: ' + err);
             callback(err);
         } else {
-            callback(null, data);
+            callback(null, parseInt(data));
         }
     });
 };
@@ -20,7 +20,7 @@ var readTX = function(callback) {
             console.error('reading tx failed: ' + err);
             callback(err);
         } else {
-            callback(null, data);
+            callback(null, parseInt(data));
         }
     });
 };
