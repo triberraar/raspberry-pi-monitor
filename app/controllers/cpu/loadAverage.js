@@ -16,7 +16,7 @@ var readFile = function(callback) {
 
 var processLoadAvg = function(data, callback) {
     var processedData = /^(\S+)\s(\S+)\s(\S+)/.exec(data);
-    callback(null, {'1min': processedData[1], '5min': processedData[2], '15min': processedData[3]});
+    callback(null, {'1min': parseFloat(processedData[1]), '5min': parseFloat(processedData[2]), '15min': parseFloat(processedData[3])});
 };
 
 exports.getLoadAverage = function(callback) {
