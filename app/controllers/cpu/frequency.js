@@ -28,5 +28,5 @@ exports.getCurrentFrequency = function(callback) {
         } else {
             callback(null, result);
         }
-    })
+    });
 };

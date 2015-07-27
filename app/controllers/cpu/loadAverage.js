@@ -29,5 +29,5 @@ exports.getLoadAverage = function(callback) {
         } else {
             callback(null, result);
         }
-    })
+    });
 };
