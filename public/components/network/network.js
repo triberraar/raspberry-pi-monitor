@@ -146,7 +146,7 @@ angular.module('network', [
             _this.data = [
                 [],[]
             ];
-            _this.series = ['RX', 'TX'];
+            _this.series = ['RX (kB/s)', 'TX (kB/s)'];
             _this.options = {animation: false};
 
             _this.numberOfEntriesList = [
@@ -185,7 +185,7 @@ angular.module('network', [
 
             var durationInSeconds = moment.duration(current.time.diff(previous.time)).asSeconds();
 
-            return filesize((current.data.rx - previous.data.rx) / durationInSeconds, {exponent: 1});
+            return filesize((current.data.rx - previous.data.rx) / durationInSeconds, {exponent: 1,output: 'object'}).value;
         }
 
         function calculateSpeedTX(previous, current) {
@@ -195,7 +195,7 @@ angular.module('network', [
 
             var durationInSeconds = moment.duration(current.time.diff(previous.time)).asSeconds();
 
-            return filesize((current.data.tx - previous.data.tx) / durationInSeconds, {exponent: 1});
+            return filesize((current.data.tx - previous.data.tx) / durationInSeconds, {exponent: 1,output: 'object'}).value;
         }
 
         $scope.$watch(networkDataService.getData, function() {
