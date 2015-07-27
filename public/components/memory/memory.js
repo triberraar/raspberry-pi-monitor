@@ -118,7 +118,7 @@ angular.module('memory', [
             _this.data = [
                 []
             ];
-            _this.series = ['total', 'free', 'used'];
+            _this.series = ['total', 'used', 'free'];
             _this.options = {animation: false};
 
             _this.numberOfEntriesList = [
@@ -136,8 +136,8 @@ angular.module('memory', [
             });
             _this.data = [
                 _.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.total'),
-                _.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.free'),
-                _.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.used')];
+                _.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.used'),
+                _.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.free')];
         }
 
         $scope.$watch(memoryDataService.getData, function() {
