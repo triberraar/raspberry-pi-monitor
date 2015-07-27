@@ -2,9 +2,9 @@
     <h2>Memory</h2>
     <form class="form-horizontal">
         <div class="form-group">
-            <label class="col-sm-2 control-label">Refresh every</label>
+            <label class="col-sm-2 control-label" for="memoryRefreshInterval">Refresh every</label>
             <div class="col-sm-3">
-                <select class="form-control" ng-model="memoryController.refreshInterval" ng-options="item.caption for item in memoryController.refreshIntervals" ng-change="memoryController.refreshIntervalChanged()">
+                <select id="memoryRefreshInterval" class="form-control" ng-model="memoryController.refreshInterval" ng-options="item.caption for item in memoryController.refreshIntervals" ng-change="memoryController.refreshIntervalChanged()">
 
                 </select>
             </div>

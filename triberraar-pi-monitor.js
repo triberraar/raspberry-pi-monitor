@@ -8,6 +8,7 @@ var _ = require('lodash');
 
 var cpuInfo = require('./app/controllers/cpu/cpu');
 var memory = require('./app/controllers/memory/memory');
+var network = require('./app/controllers/network/network');
 
 server.listen(7076);
 
@@ -19,6 +20,7 @@ app.get('/', function (req, res) {
 
 require('./app/routes/cpu')(app, cpuInfo);
 require('./app/routes/memory')(app, memory);
+require('./app/routes/network')(app, network);
 
 io.on('connection', function (socket) {
     socket.on('cpu', function() {
@@ -30,6 +32,12 @@ io.on('connection', function (socket) {
     socket.on('memory', function() {
         memory.getMemory(function(memoryData) {
             socket.emit('memory', memoryData);
-        })
-    })
+        });
+    });
+
+    socket.on('network', function() {
+        network.getNetworkInfo(function(networkData) {
+            socket.emit('network', networkData);
+        });
+    });
 });

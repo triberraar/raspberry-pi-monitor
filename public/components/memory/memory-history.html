@@ -2,9 +2,9 @@
     <h3>Memory history</h3>
     <form class="form-horizontal">
         <div class="form-group">
-            <label class="col-sm-2 control-label">Number Of entries</label>
+            <label class="col-sm-2 control-label" for="numberOfEntries">Number Of entries</label>
             <div class="col-sm-3">
-                <select class="form-control" ng-model="memoryHistoryController.numberOfEntries" ng-options="item.caption for item in memoryHistoryController.numberOfEntriesList" ng-change="memoryHistoryController.updateNumberOfEntries()">
+                <select id="numberOfEntries" class="form-control" ng-model="memoryHistoryController.numberOfEntries" ng-options="item.caption for item in memoryHistoryController.numberOfEntriesList" ng-change="memoryHistoryController.updateNumberOfEntries()">
 
                 </select>
             </div>

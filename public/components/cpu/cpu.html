@@ -2,9 +2,9 @@
     <h2>Cpu</h2>
     <form class="form-horizontal">
         <div class="form-group">
-            <label class="col-sm-2 control-label">Refresh every</label>
+            <label class="col-sm-2 control-label" for="cpuRefreshInterval">Refresh every</label>
             <div class="col-sm-3">
-                <select class="form-control" ng-model="cpuController.refreshInterval" ng-options="item.caption for item in cpuController.refreshIntervals" ng-change="cpuController.refreshIntervalChanged()">
+                <select id="cpuRefreshInterval" class="form-control" ng-model="cpuController.refreshInterval" ng-options="item.caption for item in cpuController.refreshIntervals" ng-change="cpuController.refreshIntervalChanged()">
 
                 </select>
             </div>

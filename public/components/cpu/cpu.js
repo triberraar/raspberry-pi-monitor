@@ -50,8 +50,8 @@ angular.module('cpu', [
         };
 
         function requery() {
-            socket.emit('cpu')
-        };
+            socket.emit('cpu');
+        }
 
         socket.on('cpu', function(data){
             _cpuData.push({time: moment(), data: data});
@@ -68,7 +68,7 @@ angular.module('cpu', [
             getData: _getData,
             pause: _pause,
             play: _play
-        }
+        };
     })
     .controller('CpuController', function($state, cpuDataService){
         var _this = this;
@@ -97,7 +97,7 @@ angular.module('cpu', [
         _this.pause = cpuDataService.pause;
 
         _this.navigateToHistoryShown = function() {
-            return $state.$current.name != 'cpu.history';
+            return $state.$current.name !== 'cpu.history';
         };
 
         init();
@@ -124,7 +124,7 @@ angular.module('cpu', [
 
         function updateData() {
             _this.labels = _.pluck(cpuDataService.getData(_this.numberOfEntries.value), 'time').map(function(value) {
-                return value.format('DD/MM/YYYY, HH:mm:ss')
+                return value.format('DD/MM/YYYY, HH:mm:ss');
             });
             _this.data = [
                 _.pluck(cpuDataService.getData(_this.numberOfEntries.value), 'data.loadAvg.1min'),

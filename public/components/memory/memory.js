@@ -50,8 +50,8 @@ angular.module('memory', [
         };
 
         function requery() {
-            socket.emit('memory')
-        };
+            socket.emit('memory');
+        }
 
         socket.on('memory', function(data){
             _memoryData.push({time: moment(), data: data});
@@ -68,7 +68,7 @@ angular.module('memory', [
             getData: _getData,
             pause: _pause,
             play: _play
-        }
+        };
     })
     .controller('MemoryController', function($state, memoryDataService){
         var _this = this;
@@ -97,7 +97,7 @@ angular.module('memory', [
         _this.pause = memoryDataService.pause;
 
         _this.navigateToHistoryShown = function() {
-            return $state.$current.name != 'memory.history';
+            return $state.$current.name !== 'memory.history';
         };
 
         _this.toMB = function(value) {
@@ -132,7 +132,7 @@ angular.module('memory', [
 
         function updateData() {
             _this.labels = _.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'time').map(function(value) {
-                return value.format('DD/MM/YYYY, HH:mm:ss')
+                return value.format('DD/MM/YYYY, HH:mm:ss');
             });
             _this.data = [
                 _.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.total'),
