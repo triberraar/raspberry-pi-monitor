@@ -138,15 +138,15 @@ angular.module('network', [
 
         init();
     })
-    .controller('NetworkHistoryController', function($scope, _, moment, networkDataService) {
+    .controller('NetworkHistoryController', function($scope, _, moment, filesize, networkDataService) {
         var _this = this;
 
         function init() {
             _this.labels = [];
             _this.data = [
-                []
+                [],[]
             ];
-            _this.series = ['total', 'used', 'free'];
+            _this.series = ['RX', 'TX'];
             _this.options = {animation: false};
 
             _this.numberOfEntriesList = [
@@ -159,13 +159,40 @@ angular.module('network', [
         }
 
         function updateData() {
-            _this.labels = _.pluck(networkDataService.getData(_this.numberOfEntries.value), 'time').map(function(value) {
+            _this.labels = _.pluck(networkDataService.getData(_this.numberOfEntries.value + 1), 'time').map(function(value) {
                 return value.format('DD/MM/YYYY, HH:mm:ss');
             });
-            _this.data = [
-                _.pluck(networkDataService.getData(_this.numberOfEntries.value), 'data.total'),
-                _.pluck(networkDataService.getData(_this.numberOfEntries.value), 'data.used'),
-                _.pluck(networkDataService.getData(_this.numberOfEntries.value), 'data.free')];
+
+            _this.labels = _this.labels.slice(1);
+
+            var tempData = [
+                networkDataService.getData(_this.numberOfEntries.value + 1),
+                networkDataService.getData(_this.numberOfEntries.value + 1)];
+
+            for(var  i=1; i< tempData[0].length; i++) {
+                _this.data[0].push(calculateSpeedRX(tempData[0][i-1], tempData[0][i]));
+                _this.data[1].push(calculateSpeedTX(tempData[1][i-1], tempData[1][i]));
+            }
+        }
+
+        function calculateSpeedRX(previous, current) {
+            if(!previous || !current) {
+                return;
+            }
+
+            var durationInSeconds = moment.duration(current.time.diff(previous.time)).asSeconds();
+
+            return filesize((current.data.rx - previous.data.rx) / durationInSeconds, {exponent: 1,output: 'object'}).value;
+        }
+
+        function calculateSpeedTX(previous, current) {
+            if(!previous || !current) {
+                return;
+            }
+
+            var durationInSeconds = moment.duration(current.time.diff(previous.time)).asSeconds();
+
+            return filesize((current.data.tx - previous.data.tx) / durationInSeconds, {exponent: 1,output: 'object'}).value;
         }
 
         $scope.$watch(networkDataService.getData, function() {
