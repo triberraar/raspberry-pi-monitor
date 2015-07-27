@@ -1,7 +1,6 @@
 'use strict';
 
-var spawn = require('child_process').spawn,
-    _ = require('lodash'),
+var _ = require('lodash'),
     async = require('async'),
     loadAverage = require('./loadAverage'),
     frequency = require('./frequency');
@@ -22,4 +21,3 @@ var getCpuInfo = function(callback) {
 };
 
 exports.getCpuInfo = getCpuInfo;
-

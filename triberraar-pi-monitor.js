@@ -9,8 +9,6 @@ var _ = require('lodash');
 var cpuInfo = require('./app/controllers/cpu/cpu');
 var memory = require('./app/controllers/memory/memory');
 
-var sockets = [];
-
 server.listen(7076);
 
 app.use(express.static('public'));
@@ -18,6 +16,9 @@ app.use(express.static('public'));
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/app/views/index.html');
 });
+
+require('./app/routes/cpu')(app, cpuInfo);
+require('./app/routes/memory')(app, memory);
 
 io.on('connection', function (socket) {
     socket.on('cpu', function() {
