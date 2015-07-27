@@ -11,4 +11,7 @@ angular.module('util',[
     })
     .factory('moment', function($window){
         return $window.moment;
+    })
+    .factory('filesize', function($window) {
+        return $window.filesize;
     });

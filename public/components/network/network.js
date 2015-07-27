@@ -1,22 +1,22 @@
 'use strict';
 
-angular.module('memory', [
+angular.module('network', [
     'util',
     'ui.router'
 ]).config(function ($stateProvider) {
     $stateProvider
-        .state('memory', {
-            url:'/memory',
-            templateUrl: '/components/memory/memory.html'
+        .state('network', {
+            url:'/network',
+            templateUrl: '/components/network/network.html'
         })
-        .state('memory.history', {
+        .state('network.history', {
             url:'/history',
-            templateUrl: '/components/memory/memory-history.html'
+            templateUrl: '/components/network/network-history.html'
         });
 })
-    .factory('memoryDataService', function($timeout, socket, moment){
+    .factory('networkDataService', function($timeout, socket, moment){
         var _refreshInterval;
-        var _memoryData = [];
+        var _networkData = [];
         var _timeout;
         var _paused = false;
 
@@ -31,10 +31,10 @@ angular.module('memory', [
         };
 
         var _getData = function(numberOfLatestEntries) {
-            if(!numberOfLatestEntries || _memoryData.length <= numberOfLatestEntries) {
-                return _memoryData;
+            if(!numberOfLatestEntries || _networkData.length <= numberOfLatestEntries) {
+                return _networkData;
             }
-            return _memoryData.slice(_memoryData.length - numberOfLatestEntries);
+            return _networkData.slice(_networkData.length - numberOfLatestEntries);
         };
 
         var _pause = function() {
@@ -50,11 +50,11 @@ angular.module('memory', [
         };
 
         function requery() {
-            socket.emit('memory');
+            socket.emit('network');
         }
 
-        socket.on('memory', function(data){
-            _memoryData.push({time: moment(), data: data});
+        socket.on('network', function(data){
+            _networkData.push({time: moment(), data: data});
             if(!_paused) {
                 _timeout = $timeout(requery, _refreshInterval);
             }
@@ -64,13 +64,13 @@ angular.module('memory', [
 
         return {
             setRefreshInterval : _setRefreshInterval,
-            getLatest: function() { return _memoryData[_memoryData.length -1];},
+            getLatest: function() { return _networkData[_networkData.length -1];},
             getData: _getData,
             pause: _pause,
             play: _play
         };
     })
-    .controller('MemoryController', function($state, filesize, memoryDataService){
+    .controller('NetworkController', function($state, filesize, moment, networkDataService){
         var _this = this;
 
         function init() {
@@ -84,20 +84,20 @@ angular.module('memory', [
                 {caption: '15 minutes', value: 900000}
             ];
             _this.refreshInterval=_this.refreshIntervals[1];
-            memoryDataService.setRefreshInterval( _this.refreshInterval.value);
+            networkDataService.setRefreshInterval( _this.refreshInterval.value);
         }
 
         _this.refreshIntervalChanged = function() {
-            memoryDataService.setRefreshInterval(_this.refreshInterval.value);
+            networkDataService.setRefreshInterval(_this.refreshInterval.value);
         };
 
-        _this.getLatest = memoryDataService.getLatest;
+        _this.getLatest = networkDataService.getLatest;
 
-        _this.play = memoryDataService.play;
-        _this.pause = memoryDataService.pause;
+        _this.play = networkDataService.play;
+        _this.pause = networkDataService.pause;
 
         _this.navigateToHistoryShown = function() {
-            return $state.$current.name !== 'memory.history';
+            return $state.$current.name !== 'network.history';
         };
 
         _this.convertBytesToHumanReadable = function(value) {
@@ -106,13 +106,39 @@ angular.module('memory', [
             }
         };
 
-        _this.getFreePercentage = function(total, free) {
-            return ((free / total) * 100).toFixed(2);
+        _this.calculateSpeedRX = function() {
+            var lastDatas = networkDataService.getData(2);
+
+            if(lastDatas.length !== 2) {
+                return '--';
+            }
+
+            var previousBytes = lastDatas[0].data.rx;
+            var currentBytes = lastDatas[1].data.rx;
+
+            var durationInSeconds = moment.duration(lastDatas[1].time.diff(lastDatas[0].time)).asSeconds();
+
+            return filesize((currentBytes - previousBytes) / durationInSeconds);
+        };
+
+        this.calculateSpeedTX = function() {
+            var lastDatas = networkDataService.getData(2);
+
+            if(lastDatas.length !== 2) {
+                return '--';
+            }
+
+            var previousBytes = lastDatas[0].data.tx;
+            var currentBytes = lastDatas[1].data.tx;
+
+            var durationInSeconds = moment.duration(lastDatas[1].time.diff(lastDatas[0].time)).asSeconds();
+
+            return filesize((currentBytes - previousBytes) / durationInSeconds);
         };
 
         init();
     })
-    .controller('MemoryHistoryController', function($scope, _, moment, filesize, memoryDataService) {
+    .controller('NetworkHistoryController', function($scope, _, moment, networkDataService) {
         var _this = this;
 
         function init() {
@@ -133,17 +159,16 @@ angular.module('memory', [
         }
 
         function updateData() {
-            _this.labels = _.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'time').map(function(value) {
+            _this.labels = _.pluck(networkDataService.getData(_this.numberOfEntries.value), 'time').map(function(value) {
                 return value.format('DD/MM/YYYY, HH:mm:ss');
             });
             _this.data = [
-                _.map(_.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.total'), function(value) { return filesize(value * 1024, {output: 'object'}).value;}),
-                _.map(_.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.used'), function(value) { return filesize(value * 1024, {output: 'object'}).value;}),
-                _.map(_.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.free'), function(value) { return filesize(value * 1024, {output: 'object'}).value;})
-            ];
+                _.pluck(networkDataService.getData(_this.numberOfEntries.value), 'data.total'),
+                _.pluck(networkDataService.getData(_this.numberOfEntries.value), 'data.used'),
+                _.pluck(networkDataService.getData(_this.numberOfEntries.value), 'data.free')];
         }
 
-        $scope.$watch(memoryDataService.getData, function() {
+        $scope.$watch(networkDataService.getData, function() {
             updateData();
         }, true);
 
