@@ -176,6 +176,13 @@ angular.module('network', [
                 _this.data[0].push(calculateSpeedRX(tempData[0][i-1], tempData[0][i]));
                 _this.data[1].push(calculateSpeedTX(tempData[1][i-1], tempData[1][i]));
             }
+
+            if (_this.labels.length === 0) {
+                _this.labels = [''];
+                _this.data = [
+                    [''],['']
+                ];
+            }
         }
 
         function calculateSpeedRX(previous, current) {
