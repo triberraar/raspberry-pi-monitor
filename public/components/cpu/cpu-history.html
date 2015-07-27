@@ -3,9 +3,9 @@
     <h4>Load average</h4>
     <form class="form-horizontal">
         <div class="form-group">
-            <label class="col-sm-2 control-label">Number Of entries</label>
+            <label class="col-sm-2 control-label" for="numberOfEntries">Number Of entries</label>
             <div class="col-sm-3">
-                <select class="form-control" ng-model="cpuHistoryController.numberOfEntries" ng-options="item.caption for item in cpuHistoryController.numberOfEntriesList" ng-change="cpuHistoryController.updateNumberOfEntries()">
+                <select id="numberOfEntries" class="form-control" ng-model="cpuHistoryController.numberOfEntries" ng-options="item.caption for item in cpuHistoryController.numberOfEntriesList" ng-change="cpuHistoryController.updateNumberOfEntries()">
 
                 </select>
             </div>

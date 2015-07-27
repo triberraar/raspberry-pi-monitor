@@ -38,7 +38,8 @@
 		"afterEach",
 		"it",
 		"inject",
-		"expect"
+		"expect",
+	  	"angular"
         
 	],
 	"indent": 4, 

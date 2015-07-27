@@ -30,5 +30,5 @@ exports.getMemory = function(callback) {
         } else {
             callback(result);
         }
-    })
+    });
 };

@@ -50,8 +50,8 @@ angular.module('memory', [
         };
 
         function requery() {
-            socket.emit('memory')
-        };
+            socket.emit('memory');
+        }
 
         socket.on('memory', function(data){
             _memoryData.push({time: moment(), data: data});
@@ -68,9 +68,9 @@ angular.module('memory', [
             getData: _getData,
             pause: _pause,
             play: _play
-        }
+        };
     })
-    .controller('MemoryController', function($state, memoryDataService){
+    .controller('MemoryController', function($state, filesize, memoryDataService){
         var _this = this;
 
         function init() {
@@ -97,11 +97,13 @@ angular.module('memory', [
         _this.pause = memoryDataService.pause;
 
         _this.navigateToHistoryShown = function() {
-            return $state.$current.name != 'memory.history';
+            return $state.$current.name !== 'memory.history';
         };
 
-        _this.toMB = function(value) {
-            return (value / 1024).toFixed(2);
+        _this.convertBytesToHumanReadable = function(value) {
+            if(value) {
+                return filesize(value * 1024);
+            }
         };
 
         _this.getFreePercentage = function(total, free) {
@@ -110,7 +112,7 @@ angular.module('memory', [
 
         init();
     })
-    .controller('MemoryHistoryController', function($scope, _, moment, memoryDataService) {
+    .controller('MemoryHistoryController', function($scope, _, moment, filesize, memoryDataService) {
         var _this = this;
 
         function init() {
@@ -132,12 +134,13 @@ angular.module('memory', [
 
         function updateData() {
             _this.labels = _.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'time').map(function(value) {
-                return value.format('DD/MM/YYYY, HH:mm:ss')
+                return value.format('DD/MM/YYYY, HH:mm:ss');
             });
             _this.data = [
-                _.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.total'),
-                _.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.used'),
-                _.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.free')];
+                _.map(_.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.total'), function(value) { return filesize(value * 1024, {output: 'object'}).value;}),
+                _.map(_.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.used'), function(value) { return filesize(value * 1024, {output: 'object'}).value;}),
+                _.map(_.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.free'), function(value) { return filesize(value * 1024, {output: 'object'}).value;})
+            ];
         }
 
         $scope.$watch(memoryDataService.getData, function() {
