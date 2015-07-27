@@ -169,6 +169,9 @@ angular.module('network', [
                 networkDataService.getData(_this.numberOfEntries.value + 1),
                 networkDataService.getData(_this.numberOfEntries.value + 1)];
 
+            _this.data = [
+                [],[]
+            ];
             for(var  i=1; i< tempData[0].length; i++) {
                 _this.data[0].push(calculateSpeedRX(tempData[0][i-1], tempData[0][i]));
                 _this.data[1].push(calculateSpeedTX(tempData[1][i-1], tempData[1][i]));
