@@ -1,0 +1,45 @@
+'use strict';
+
+var fs = require('fs'),
+    async = require('async'),
+    spawn = require('child_process').spawn;
+
+var df = function(callback) {
+    var ps = spawn('df', ['/']),
+        buffer = '';
+
+    ps.stdout.on('data', function (data) {
+        buffer = buffer + data;
+    });
+
+    ps.stderr.on('data', function (data) {
+        callback(data);
+    });
+
+    ps.on('close', function (code) {
+        console.log(buffer);
+        callback(null, buffer);
+    });
+};
+
+var processDf = function(data, callback) {
+    data = data.trim();
+    var total = /\S+\s+(\d+).*\/$/.exec(data)[1];
+    var used = /\S+\s+\d+\s+(\d+).*\/$/.exec(data)[1];
+    var available = /\S+\s+\d+\s+\d+\s+(\d+).*\/$/.exec(data)[1];
+    var reserved = total - used - available;
+    callback(null, {total : total, used: used, available: available, reserved: reserved});
+};
+
+exports.getStorageInfo = function(callback) {
+    async.waterfall([
+        df,
+        processDf
+    ], function(err, result){
+        if(err) {
+            console.error('getStorageInfo failed: ', err);
+        } else {
+            callback(result);
+        }
+    });
+};
