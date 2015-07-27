@@ -185,7 +185,7 @@ angular.module('network', [
 
             var durationInSeconds = moment.duration(current.time.diff(previous.time)).asSeconds();
 
-            return filesize((current.data.rx - previous.data.rx) / durationInSeconds, {exponent: 1,output: 'object'}).value;
+            return filesize((current.data.rx - previous.data.rx) / durationInSeconds, {exponent: 1});
         }
 
         function calculateSpeedTX(previous, current) {
@@ -195,7 +195,7 @@ angular.module('network', [
 
             var durationInSeconds = moment.duration(current.time.diff(previous.time)).asSeconds();
 
-            return filesize((current.data.tx - previous.data.tx) / durationInSeconds, {exponent: 1,output: 'object'}).value;
+            return filesize((current.data.tx - previous.data.tx) / durationInSeconds, {exponent: 1});
         }
 
         $scope.$watch(networkDataService.getData, function() {
