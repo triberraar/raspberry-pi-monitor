@@ -102,7 +102,7 @@ angular.module('network', [
 
         _this.convertBytesToHumanReadable = function(value) {
             if(value) {
-                return filesize(value * 1024);
+                return filesize(value);
             }
         };
 
