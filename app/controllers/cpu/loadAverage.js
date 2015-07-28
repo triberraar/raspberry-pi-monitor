@@ -6,7 +6,7 @@ var fs = require('fs'),
 var readFile = function(callback) {
     fs.readFile('/proc/loadavg', {encoding: 'binary'}, function(err, data) {
        if(err) {
-           console.error('reading loadavg failed: ' + err);
+           console.error('reading loadavg failed (are you running as sudo?): ' + JSON.stringify(err));
            callback(err);
        } else {
            callback(null, data);
@@ -25,7 +25,7 @@ exports.getLoadAverage = function(callback) {
         processLoadAvg
     ], function(err, result){
         if(err) {
-            console.error('getLoadAverage failed: ', err);
+            console.error('getLoadAverage failed (are you running as sudo?): ', JSON.stringify(err));
         } else {
             callback(null, result);
         }

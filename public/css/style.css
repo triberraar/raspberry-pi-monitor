@@ -98,3 +98,12 @@
     display: inline-block;
     border-radius: 50%;
 }
+
+.progress .progress-bar {
+    font-size: 13px;
+    line-height: 15px;
+}
+
+.progress {
+    height: 15px;
+}

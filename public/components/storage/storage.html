@@ -28,9 +28,9 @@
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
             <progress>
-                <bar class="progress-striped" value="storageController.getFreePercentage(storageController.getLatest().data.total,storageController.getLatest().data.reserved)" type="info"></bar>
-                <bar class="progress-striped" value="storageController.getFreePercentage(storageController.getLatest().data.total,storageController.getLatest().data.used)" type="warning"></bar>
-                <bar class="progress-striped" value="storageController.getFreePercentage(storageController.getLatest().data.total,storageController.getLatest().data.free)" type="success"></bar>
+                <bar class="progress-striped" value="storageController.getFreePercentage(storageController.getLatest().data.total,storageController.getLatest().data.reserved)" type="info"><span>Reserved</span></bar>
+                <bar class="progress-striped" value="storageController.getFreePercentage(storageController.getLatest().data.total,storageController.getLatest().data.used)" type="warning"><span>Used</span></bar>
+                <bar class="progress-striped" value="storageController.getFreePercentage(storageController.getLatest().data.total,storageController.getLatest().data.free)" type="success"><span>Free</span></bar>
             </progress>
         </div>
     </div>

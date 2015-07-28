@@ -6,7 +6,7 @@ var fs = require('fs'),
 var readFile = function(callback) {
     fs.readFile('/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq', {encoding: 'binary'}, function(err, data) {
         if(err) {
-            console.error('reading current frequency failed: ' + err);
+            console.error('reading current frequency failed (are you running as sudo?): ' + JSON.stringify(err));
             callback(err);
         } else {
             callback(null, data);
@@ -24,7 +24,7 @@ exports.getCurrentFrequency = function(callback) {
         processCurrentFrequency
     ], function(err, result){
         if(err) {
-            console.error('getCurrentFrequency failed: ', err);
+            console.error('getCurrentFrequency failed (are you running as sudo?): ', JSON.stringify(err));
         } else {
             callback(null, result);
         }

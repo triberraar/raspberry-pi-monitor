@@ -36,7 +36,7 @@ exports.getStorageInfo = function(callback) {
         processDf
     ], function(err, result){
         if(err) {
-            console.error('getStorageInfo failed: ', err);
+            console.error('getStorageInfo failed (are you running as sudo?): ', JSON.stringify(err));
         } else {
             callback(result);
         }
