@@ -17,7 +17,6 @@ var df = function(callback) {
     });
 
     ps.on('close', function (code) {
-        console.log(buffer);
         callback(null, buffer);
     });
 };
@@ -28,7 +27,7 @@ var processDf = function(data, callback) {
     var used = /\S+\s+\d+\s+(\d+).*\/$/.exec(data)[1];
     var available = /\S+\s+\d+\s+\d+\s+(\d+).*\/$/.exec(data)[1];
     var reserved = total - used - available;
-    callback(null, {total : total, used: used, available: available, reserved: reserved});
+    callback(null, {total : parseInt(total), used: parseInt(used), free: parseInt(available), reserved: parseInt(reserved)});
 };
 
 exports.getStorageInfo = function(callback) {

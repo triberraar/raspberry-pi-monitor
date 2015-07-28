@@ -1,0 +1,37 @@
+<div ng-controller="StorageController as storageController">
+    <h2>Storage</h2>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="storageRefreshInterval">Refresh every</label>
+            <div class="col-sm-3">
+                <select id="storageRefreshInterval" class="form-control" ng-model="storageController.refreshInterval" ng-options="item.caption for item in storageController.refreshIntervals" ng-change="storageController.refreshIntervalChanged()">
+
+                </select>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-default" ng-click="storageController.pause()"><i class="fa fa-pause"></i></button>
+                <button class="btn btn-default" ng-click="storageController.play()"><i class="fa fa-play"></i></button>
+            </div>
+        </div>
+    </form>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-3 control-label">Total: <span class="badge">{{storageController.convertBytesToHumanReadable(storageController.getLatest().data.total)}}</span></label>
+                <label class="col-sm-3 control-label">Free: <span class="badge">{{storageController.convertBytesToHumanReadable(storageController.getLatest().data.free)}} ({{storageController.getFreePercentage(storageController.getLatest().data.total,storageController.getLatest().data.free)}}%)</span></label>
+                <label class="col-sm-3 control-label">Used: <span class="badge">{{storageController.convertBytesToHumanReadable(storageController.getLatest().data.used)}} ({{storageController.getFreePercentage(storageController.getLatest().data.total,storageController.getLatest().data.used)}}%)</span></label>
+                <label class="col-sm-3 control-label">Reserved: <span class="badge">{{storageController.convertBytesToHumanReadable(storageController.getLatest().data.reserved)}} ({{storageController.getFreePercentage(storageController.getLatest().data.total,storageController.getLatest().data.reserved)}}%)</span></label>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <progress>
+                <bar class="progress-striped" value="storageController.getFreePercentage(storageController.getLatest().data.total,storageController.getLatest().data.reserved)" type="info"></bar>
+                <bar class="progress-striped" value="storageController.getFreePercentage(storageController.getLatest().data.total,storageController.getLatest().data.used)" type="warning"></bar>
+                <bar class="progress-striped" value="storageController.getFreePercentage(storageController.getLatest().data.total,storageController.getLatest().data.free)" type="success"></bar>
+            </progress>
+        </div>
+    </div>
+</div>
