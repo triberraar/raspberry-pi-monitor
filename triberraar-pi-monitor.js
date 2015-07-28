@@ -50,10 +50,10 @@ io.on('connection', function (socket) {
             socket.emit('storage', storageData);
         });
     });
-
-    socket.on('time', function() {
-        time.getTime(function(timeData) {
-            socket.emit('time', timeData);
-        });
-    });
 });
+
+setInterval(function() {
+    time.getTime(function(timeData) {
+       io.emit('time', timeData);
+    });
+}, 1000);
