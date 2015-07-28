@@ -6,7 +6,7 @@
     <div ng-show="dashboardController.getFavorites().length > 0">
         <div ng-repeat="favorite in dashboardController.getFavorites()">
             <div ng-include="favorite.templateUrl" ></div>
-            <hr>
+            <hr ng-hide="$last">
         </div>
     </div>
 </div>

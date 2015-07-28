@@ -5,6 +5,7 @@ angular.module('triberraarPiMonitorApp', [
     'ui.router',
     'chart.js',
     'ui.bootstrap',
+    'ngStorage',
     'util',
     'dashboard',
     'cpu',

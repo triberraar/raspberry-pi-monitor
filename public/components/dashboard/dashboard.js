@@ -2,7 +2,8 @@
 
 angular.module('dashboard', [
     'util',
-    'ui.router'
+    'ui.router',
+    'ngStorage'
 ]).config(function ($stateProvider) {
     $stateProvider
         .state('dashboard', {
@@ -10,15 +11,17 @@ angular.module('dashboard', [
             templateUrl: '/components/dashboard/dashboard.html'
         });
 })
-    .factory('favoriteService', function(_) {
-        var _favorites = [];
+    .factory('favoriteService', function(_,$localStorage) {
+        var _favorites;
 
         var _addFavorite = function(fav) {
             _favorites.push(fav);
+            $localStorage.favorites = _favorites;
         };
 
         var _removeFavorite = function(fav) {
             _favorites = _.without(fav);
+            $localStorage.favorites = _favorites;
         };
 
         var _isFavorite = function(fav) {
@@ -32,6 +35,15 @@ angular.module('dashboard', [
                 _addFavorite(fav);
             }
         };
+
+        var init = function () {
+            _favorites = $localStorage.favorites;
+            if (!_favorites) {
+                _favorites = [];
+            }
+        };
+
+        init();
 
         return {
             toggleFavorite: _toggleFavorite,
