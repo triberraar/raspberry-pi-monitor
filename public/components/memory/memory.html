@@ -1,5 +1,5 @@
 <div ng-controller="MemoryController as memoryController">
-    <h2>Memory</h2>
+    <h2>Memory <a ng-click="memoryController.toggleFavorite()"><i class="fa" ng-class="memoryController.isFavorite() ? 'fa-bookmark' : 'fa-bookmark-o'"></i></a></h2>
     <form class="form-horizontal">
         <div class="form-group">
             <label class="col-sm-2 control-label" for="memoryRefreshInterval">Refresh every</label>
