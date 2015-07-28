@@ -20,7 +20,9 @@ angular.module('dashboard', [
         };
 
         var _removeFavorite = function(fav) {
-            _favorites = _.without(fav);
+            _favorites = _.reject(_favorites, function(item) {
+                return item.id === fav.id;
+            });
             $localStorage.favorites = _favorites;
         };
 

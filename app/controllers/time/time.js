@@ -9,7 +9,7 @@ exports.getTime = function(callback) {
         if(err) {
             console.error('Reading uptime failed (are you running as sudo?): ' + JSON.stringify(err));
         } else {
-            callback({uptime: /(^\S+)/.exec(data)[0], current: moment().toJSON()});
+            callback({uptime: /(^\S+)/.exec(data)[0] * 1000, current: moment().toJSON()});
         }
     });
 };

@@ -1,21 +1,20 @@
 'use strict';
 
-angular.module('storage', [
+angular.module('time', [
     'btford.socket-io',
     'ui.router',
-    'chart.js',
     'util',
     'dashboard'
 ]).config(function ($stateProvider) {
     $stateProvider
-        .state('storage', {
-            url:'/storage',
-            templateUrl: '/components/storage/storage.html'
+        .state('time', {
+            url:'/time',
+            templateUrl: '/components/time/time.html'
         });
 })
-    .factory('storageDataService', function($timeout, socket, moment){
+    .factory('timeDataService', function($timeout, socket, moment){
         var _refreshInterval;
-        var _storageData = [];
+        var _timeData = {};
         var _timeout;
         var _paused = false;
 
@@ -42,11 +41,11 @@ angular.module('storage', [
         };
 
         function requery() {
-            socket.emit('storage');
+            socket.emit('time');
         }
 
-        socket.on('storage', function(data){
-            _storageData.push({time: moment(), data: data});
+        socket.on('time', function(data){
+            _timeData = data;
             if(!_paused) {
                 _timeout = $timeout(requery, _refreshInterval);
             }
@@ -56,12 +55,12 @@ angular.module('storage', [
 
         return {
             setRefreshInterval : _setRefreshInterval,
-            getLatest: function() { return _storageData[_storageData.length -1];},
+            getData: function() { return _timeData;},
             pause: _pause,
             play: _play
         };
     })
-    .controller('StorageController', function(filesize, favoriteService, storageDataService){
+    .controller('TimeController', function(moment, favoriteService, timeDataService){
         var _this = this;
 
         function init() {
@@ -75,34 +74,36 @@ angular.module('storage', [
                 {caption: '15 minutes', value: 900000}
             ];
             _this.refreshInterval=_this.refreshIntervals[1];
-            storageDataService.setRefreshInterval( _this.refreshInterval.value);
+            timeDataService.setRefreshInterval( _this.refreshInterval.value);
         }
 
         _this.refreshIntervalChanged = function() {
-            storageDataService.setRefreshInterval(_this.refreshInterval.value);
+            timeDataService.setRefreshInterval(_this.refreshInterval.value);
         };
 
-        _this.getLatest = storageDataService.getLatest;
+        _this.play = timeDataService.play;
+        _this.pause = timeDataService.pause;
 
-        _this.play = storageDataService.play;
-        _this.pause = storageDataService.pause;
-
-        _this.convertBytesToHumanReadable = function(value) {
-            if(value) {
-                return filesize(value * 1024);
+        _this.getTime = function() {
+            if(timeDataService.getData() && timeDataService.getData().current) {
+                return moment(timeDataService.getData().current).format('HH:mm:ss');
+            } else {
+                return '--:--:--';
             }
         };
 
-        _this.getFreePercentage = function(total, free) {
-            return ((free / total) * 100).toFixed(2);
+        _this.getUptime = function() {
+            if(timeDataService.getData() && timeDataService.getData().uptime) {
+                return moment.duration(timeDataService.getData().uptime);
+            }
         };
 
         _this.isFavorite = function() {
-            return favoriteService.isFavorite({id: 'storage', templateUrl: '/components/storage/storage.html'});
+            return favoriteService.isFavorite({id: 'time', templateUrl: '/components/time/time.html'});
         };
 
         _this.toggleFavorite = function() {
-            favoriteService.toggleFavorite({id: 'storage', templateUrl: '/components/storage/storage.html'});
+            favoriteService.toggleFavorite({id: 'time', templateUrl: '/components/time/time.html'});
         };
 
         init();

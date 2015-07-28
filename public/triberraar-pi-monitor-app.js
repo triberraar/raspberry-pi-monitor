@@ -11,7 +11,8 @@ angular.module('triberraarPiMonitorApp', [
     'cpu',
     'memory',
     'network',
-    'storage'
+    'storage',
+    'time'
 ])
     .config(function ($urlRouterProvider) {
         $urlRouterProvider.otherwise('/dashboard');
