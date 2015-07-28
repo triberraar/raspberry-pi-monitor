@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = function(app, cpuInfo) {
+module.exports = function(app, cpu) {
     app.get('/cpu', function(req, res) {
-        cpuInfo.getCpuInfo(function(cpuInfo) {
+        cpu.getCpuInfo(function(cpuInfo) {
             res.json(cpuInfo);
         });
     });

@@ -6,7 +6,7 @@ var fs = require('fs'),
 var readFile = function(callback) {
     fs.readFile('/proc/meminfo', {encoding: 'binary'}, function(err, data) {
         if(err) {
-            console.error('reading meminfo failed: ' + err);
+            console.error('Reading meminfo failed (are you running as sudo?): ' + JSON.stringify(err));
             callback(err);
         } else {
             callback(null, data);
@@ -26,7 +26,7 @@ exports.getMemory = function(callback) {
         processMemory
     ], function(err, result){
         if(err) {
-            console.error('getMemory failed: ', err);
+            console.error('getMemory failed (are you running as sudo?): ', JSON.stringify(err));
         } else {
             callback(result);
         }
