@@ -15,7 +15,7 @@ angular.module('storage', [
 })
     .factory('storageDataService', function($timeout, socket, moment){
         var _refreshInterval;
-        var _storageData = [];
+        var _storageData = {};
         var _timeout;
         var _paused = false;
 
@@ -46,7 +46,7 @@ angular.module('storage', [
         }
 
         socket.on('storage', function(data){
-            _storageData.push({time: moment(), data: data});
+            _storageData = data;
             if(!_paused) {
                 _timeout = $timeout(requery, _refreshInterval);
             }
@@ -56,7 +56,7 @@ angular.module('storage', [
 
         return {
             setRefreshInterval : _setRefreshInterval,
-            getLatest: function() { return _storageData[_storageData.length -1];},
+            getData: function() { return _storageData;},
             pause: _pause,
             play: _play
         };
@@ -82,7 +82,7 @@ angular.module('storage', [
             storageDataService.setRefreshInterval(_this.refreshInterval.value);
         };
 
-        _this.getLatest = storageDataService.getLatest;
+        _this.getData = storageDataService.getData;
 
         _this.play = storageDataService.play;
         _this.pause = storageDataService.pause;
