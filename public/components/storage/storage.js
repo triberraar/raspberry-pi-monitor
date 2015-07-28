@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('storage', [
+    'btford.socket-io',
+    'ui.router',
+    'chart.js',
     'util',
-    'ui.router'
+    'dashboard'
 ]).config(function ($stateProvider) {
     $stateProvider
         .state('storage', {
@@ -58,7 +61,7 @@ angular.module('storage', [
             play: _play
         };
     })
-    .controller('StorageController', function($state, filesize, storageDataService){
+    .controller('StorageController', function($state, filesize, favoriteService, storageDataService){
         var _this = this;
 
         function init() {
@@ -92,6 +95,14 @@ angular.module('storage', [
 
         _this.getFreePercentage = function(total, free) {
             return ((free / total) * 100).toFixed(2);
+        };
+
+        _this.isFavorite = function() {
+            return favoriteService.isFavorite({id: 'storage', templateUrl: '/components/storage/storage.html'});
+        };
+
+        _this.toggleFavorite = function() {
+            favoriteService.toggleFavorite({id: 'storage', templateUrl: '/components/storage/storage.html'});
         };
 
         init();
