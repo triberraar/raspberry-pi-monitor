@@ -10,6 +10,7 @@ var cpuInfo = require('./app/controllers/cpu/cpu');
 var memory = require('./app/controllers/memory/memory');
 var network = require('./app/controllers/network/network');
 var storage = require('./app/controllers/storage/storage');
+var time = require('./app/controllers/time/time');
 
 server.listen(7076);
 
@@ -23,6 +24,7 @@ require('./app/routes/cpu')(app, cpuInfo);
 require('./app/routes/memory')(app, memory);
 require('./app/routes/network')(app, network);
 require('./app/routes/storage')(app, storage);
+require('./app/routes/time')(app,time);
 
 io.on('connection', function (socket) {
     socket.on('cpu', function() {
@@ -46,6 +48,12 @@ io.on('connection', function (socket) {
     socket.on('storage', function() {
         storage.getStorageInfo(function(storageData) {
             socket.emit('storage', storageData);
+        });
+    });
+
+    socket.on('time', function() {
+        time.getTime(function(timeData) {
+            socket.emit('time', timeData);
         });
     });
 });
