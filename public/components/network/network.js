@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('network', [
+    'btford.socket-io',
+    'ui.router',
+    'chart.js',
     'util',
-    'ui.router'
+    'dashboard'
 ]).config(function ($stateProvider) {
     $stateProvider
         .state('network', {
@@ -70,7 +73,7 @@ angular.module('network', [
             play: _play
         };
     })
-    .controller('NetworkController', function($state, filesize, moment, networkDataService){
+    .controller('NetworkController', function($state, filesize, moment, favoriteService, networkDataService){
         var _this = this;
 
         function init() {
@@ -134,6 +137,14 @@ angular.module('network', [
             var durationInSeconds = moment.duration(lastDatas[1].time.diff(lastDatas[0].time)).asSeconds();
 
             return filesize((currentBytes - previousBytes) / durationInSeconds);
+        };
+
+        _this.isFavorite = function() {
+            return favoriteService.isFavorite({id: 'network', templateUrl: '/components/network/network.html'});
+        };
+
+        _this.toggleFavorite = function() {
+            favoriteService.toggleFavorite({id: 'network', templateUrl: '/components/network/network.html'});
         };
 
         init();

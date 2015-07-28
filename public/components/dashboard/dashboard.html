@@ -1,8 +1,12 @@
-<h1>Dashboard</h1>
-<div ng-include="'/components/cpu/cpu.html'" ></div>
-<hr>
-<div ng-include="'/components/memory/memory.html'" ></div>
-<hr>
-<div ng-include="'/components/network/network.html'" ></div>
-<hr>
-<div ng-include="'/components/storage/storage.html'" ></div>
+<div ng-controller="DashboardController as dashboardController">
+    <h1>Dashboard</h1>
+    <div ng-show="dashboardController.getFavorites().length === 0" class="alert alert-warning" role="alert">
+        No favorites configured!
+    </div>
+    <div ng-show="dashboardController.getFavorites().length > 0">
+        <div ng-repeat="favorite in dashboardController.getFavorites()">
+            <div ng-include="favorite.templateUrl" ></div>
+            <hr ng-hide="$last">
+        </div>
+    </div>
+</div>

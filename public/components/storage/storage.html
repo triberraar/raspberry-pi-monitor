@@ -1,5 +1,5 @@
 <div ng-controller="StorageController as storageController">
-    <h2>Storage</h2>
+    <h2>Storage <a ng-click="storageController.toggleFavorite()"><i class="fa" ng-class="storageController.isFavorite() ? 'fa-bookmark' : 'fa-bookmark-o'"></i></a></h2>
     <form class="form-horizontal">
         <div class="form-group">
             <label class="col-sm-2 control-label" for="storageRefreshInterval">Refresh every</label>
@@ -8,10 +8,10 @@
 
                 </select>
             </div>
-            <div class="btn-group">
-                <button class="btn btn-primary" ng-click="storageController.pause()"><i class="fa fa-pause"></i></button>
-                <button class="btn btn-primary" ng-click="storageController.play()"><i class="fa fa-play"></i></button>
-            </div>
+            <ul class="nav nav-pills">
+                <li><button class="btn btn-primary" ng-click="storageController.pause()"><i class="fa fa-pause"></i></button></li>
+                <li><button class="btn btn-primary" ng-click="storageController.play()"><i class="fa fa-play"></i></button></li>
+            </ul>
         </div>
     </form>
     <form class="form-horizontal">

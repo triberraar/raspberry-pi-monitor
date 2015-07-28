@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('cpu', [
+    'btford.socket-io',
+    'ui.router',
+    'chart.js',
     'util',
-    'ui.router'
+    'dashboard'
 ]).config(function ($stateProvider) {
     $stateProvider
         .state('cpu', {
@@ -70,7 +73,7 @@ angular.module('cpu', [
             play: _play
         };
     })
-    .controller('CpuController', function($state, cpuDataService){
+    .controller('CpuController', function($state, cpuDataService, favoriteService){
         var _this = this;
 
         function init() {
@@ -98,6 +101,14 @@ angular.module('cpu', [
 
         _this.navigateToHistoryShown = function() {
             return $state.$current.name !== 'cpu.history';
+        };
+
+        _this.isFavorite = function() {
+            return favoriteService.isFavorite({id: 'cpu', templateUrl: '/components/cpu/cpu.html'});
+        };
+
+        _this.toggleFavorite = function() {
+            favoriteService.toggleFavorite({id: 'cpu', templateUrl: '/components/cpu/cpu.html'});
         };
 
         init();

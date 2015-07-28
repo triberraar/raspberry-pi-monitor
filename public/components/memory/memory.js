@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('memory', [
+    'btford.socket-io',
+    'ui.router',
+    'chart.js',
     'util',
-    'ui.router'
+    'dashboard'
 ]).config(function ($stateProvider) {
     $stateProvider
         .state('memory', {
@@ -70,7 +73,7 @@ angular.module('memory', [
             play: _play
         };
     })
-    .controller('MemoryController', function($state, filesize, memoryDataService){
+    .controller('MemoryController', function($state, filesize, favoriteService, memoryDataService){
         var _this = this;
 
         function init() {
@@ -108,6 +111,14 @@ angular.module('memory', [
 
         _this.getFreePercentage = function(total, free) {
             return ((free / total) * 100).toFixed(2);
+        };
+
+        _this.isFavorite = function() {
+            return favoriteService.isFavorite({id: 'memory', templateUrl: '/components/memory/memory.html'});
+        };
+
+        _this.toggleFavorite = function() {
+            favoriteService.toggleFavorite({id: 'memory', templateUrl: '/components/memory/memory.html'});
         };
 
         init();
