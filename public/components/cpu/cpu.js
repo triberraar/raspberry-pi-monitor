@@ -59,7 +59,6 @@ angular.module('cpu', [
 
         socket.on('cpu', function(data){
             if(data.error) {
-                console.error(data.error.message + ': ' + JSON.stringify(data.error.error));
                 growl.error(data.error.message);
             } else {
                 _cpuData.push({time: moment(), data: data.content});
