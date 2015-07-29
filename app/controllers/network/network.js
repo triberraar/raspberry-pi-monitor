@@ -32,7 +32,7 @@ exports.getNetworkInfo = function(callback) {
             console.error(err.message + ': ' + JSON.stringify(err.error));
             callback(err);
         } else {
-            callback(undefined, {rx: results[0], tx: results[1]});
+            callback(undefined, {rx: parseFloat(results[0] / 1000), tx: parseFloat(results[1] / 1000)});
         }
     });
 };

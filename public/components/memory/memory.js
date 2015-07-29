@@ -83,7 +83,7 @@ angular.module('memory', [
             init: _init
         };
     })
-    .controller('MemoryController', function($state, filesize, favoriteService, memoryDataService){
+    .controller('MemoryController', function($state, sizeConverter, favoriteService, memoryDataService){
         var _this = this;
 
         function init() {
@@ -115,7 +115,7 @@ angular.module('memory', [
 
         _this.convertBytesToHumanReadable = function(value) {
             if(value) {
-                return filesize(value * 1024);
+                return sizeConverter.convert(value, 2);
             }
         };
 

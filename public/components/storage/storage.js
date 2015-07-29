@@ -70,7 +70,7 @@ angular.module('storage', [
             init: _init
         };
     })
-    .controller('StorageController', function(filesize, favoriteService, storageDataService){
+    .controller('StorageController', function(sizeConverter, favoriteService, storageDataService){
         var _this = this;
 
         function init() {
@@ -98,7 +98,7 @@ angular.module('storage', [
 
         _this.convertBytesToHumanReadable = function(value) {
             if(value) {
-                return filesize(value * 1024);
+                return sizeConverter.convert(value, 2);
             }
         };
 
