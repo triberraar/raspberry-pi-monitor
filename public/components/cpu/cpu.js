@@ -111,6 +111,21 @@ angular.module('cpu', [
             favoriteService.toggleFavorite({id: 'cpu', templateUrl: '/components/cpu/cpu.html'});
         };
 
+        _this.getTemperatureStatus = function() {
+            if(!_this.getLatest() || !_this.getLatest().data || !_this.getLatest().data.temperature) {
+                return;
+            }
+            if(_this.getLatest().data.temperature < 0) {
+                return 'warning';
+            } else if(_this.getLatest().data.temperature >=0 &&_this.getLatest().data.temperature < 50) {
+                return 'success';
+            } else if(_this.getLatest().data.temperature >= 50 && _this.getLatest().data.temperature <=75) {
+                return 'warning';
+            } else {
+                return 'danger';
+            }
+        };
+
         init();
     })
     .controller('CpuHistoryController', function($scope, _, moment, cpuDataService) {
@@ -118,10 +133,14 @@ angular.module('cpu', [
 
         function init() {
             _this.labels = [];
-            _this.data = [
+            _this.loadAvgData = [
                 []
             ];
-            _this.series = ['1min', '5min', '15min'];
+            _this.temperatureData = [
+                []
+            ];
+            _this.loadAvgSeries = ['1min', '5min', '15min'];
+            _this.temperatureSeries = ['°C'];
             _this.options = {animation: false};
 
             _this.numberOfEntriesList = [
@@ -137,23 +156,17 @@ angular.module('cpu', [
             _this.labels = _.pluck(cpuDataService.getData(_this.numberOfEntries.value), 'time').map(function(value) {
                 return value.format('DD/MM/YYYY, HH:mm:ss');
             });
-            _this.data = [
+            _this.loadAvgData = [
                 _.pluck(cpuDataService.getData(_this.numberOfEntries.value), 'data.loadAvg.1min'),
                 _.pluck(cpuDataService.getData(_this.numberOfEntries.value), 'data.loadAvg.5min'),
                 _.pluck(cpuDataService.getData(_this.numberOfEntries.value), 'data.loadAvg.15min')];
+            _this.temperatureData = [
+                _.pluck(cpuDataService.getData(_this.numberOfEntries.value), 'data.temperature')];
         }
 
         $scope.$watch(cpuDataService.getData, function() {
             updateData();
         }, true);
-
-        _this.getLabels = function() {
-            return _this.labels;
-        };
-
-        _this.getData = function() {
-            return _this.data;
-        };
 
         _this.updateNumberOfEntries = function() {
             updateData();
