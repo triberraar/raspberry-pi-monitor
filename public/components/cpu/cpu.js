@@ -111,6 +111,21 @@ angular.module('cpu', [
             favoriteService.toggleFavorite({id: 'cpu', templateUrl: '/components/cpu/cpu.html'});
         };
 
+        _this.getTemperatureStatus = function() {
+            if(!_this.getLatest() || !_this.getLatest().data || !_this.getLatest().data.temperature) {
+                return;
+            }
+            if(_this.getLatest().data.temperature < 0) {
+                return 'warning';
+            } else if(_this.getLatest().data.temperature >=0 &&_this.getLatest().data.temperature < 50) {
+                return 'success';
+            } else if(_this.getLatest().data.temperature >= 50 && _this.getLatest().data.temperature <=75) {
+                return 'warning';
+            } else {
+                return 'danger';
+            }
+        };
+
         init();
     })
     .controller('CpuHistoryController', function($scope, _, moment, cpuDataService) {

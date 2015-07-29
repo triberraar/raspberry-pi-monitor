@@ -25,6 +25,7 @@
         </div>
     </form>
     <h4>Frequency <span class="label label-info">{{cpuController.getLatest().data.frequency}}MHz</span></h4>
+    <h4>Temperature <span class="label label-{{cpuController.getTemperatureStatus()}}">{{cpuController.getLatest().data.temperature}}°C</span></h4>
     <a ng-show="cpuController.navigateToHistoryShown()" class="btn btn-primary" ui-sref="cpu.history" role="button">To history</a>
     <div ui-view></div>
 </div>
