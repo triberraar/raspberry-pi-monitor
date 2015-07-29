@@ -1,7 +1,6 @@
 'use strict';
 
-var fs = require('fs'),
-    async = require('async'),
+var async = require('async'),
     spawn = require('child_process').spawn;
 
 var df = function(callback) {
@@ -13,7 +12,7 @@ var df = function(callback) {
     });
 
     ps.stderr.on('data', function (data) {
-        callback({message: 'Executing df failed (are you running as sudo?)', error: err});
+        callback({message: 'Executing df failed (are you running as sudo?)', error: data});
     });
 
     ps.on('close', function (code) {
