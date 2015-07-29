@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="lib/angular-chart.js/dist/angular-chart.css">
         <link rel="stylesheet" href="lib/components-font-awesome/css/font-awesome.css">
         <link rel="stylesheet" href="css/cosmo.css"/>
+        <link rel="stylesheet" href="lib/angular-growl-v2/build/angular-growl.css">
         <link rel="stylesheet" href="css/style.css"/>
 
         <script src="lib/lodash/lodash.js"></script>
@@ -20,6 +21,7 @@
         <script src="lib/angular-chart.js/dist/angular-chart.js"></script>
         <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
         <script src="lib/ngstorage/ngStorage.js"></script>
+        <script src="lib/angular-growl-v2/build/angular-growl.js"></script>
 
         <script src="triberraar-pi-monitor-app.js"></script>
         <script src="util.js"></script>
@@ -45,6 +47,7 @@
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <div growl></div>
                     <div ui-view></div>
                 </div>
             </div>

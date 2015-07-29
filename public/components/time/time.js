@@ -3,6 +3,7 @@
 angular.module('time', [
     'btford.socket-io',
     'ui.router',
+    'angular-growl',
     'util',
     'dashboard'
 ]).config(function ($stateProvider) {
@@ -12,11 +13,15 @@ angular.module('time', [
             templateUrl: '/components/time/time.html'
         });
 })
-    .factory('timeDataService', function($timeout, socket, moment){
+    .factory('timeDataService', function($timeout, socket, growl){
         var _timeData = {};
 
         socket.on('time', function(data){
-            _timeData = data;
+            if(data.error) {
+                growl.error(data.error.message);
+            } else {
+                _timeData = data.content;
+            }
         });
 
         return {

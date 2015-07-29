@@ -6,6 +6,7 @@ angular.module('triberraarPiMonitorApp', [
     'chart.js',
     'ui.bootstrap',
     'ngStorage',
+    'angular-growl',
     'util',
     'dashboard',
     'cpu',
@@ -14,8 +15,9 @@ angular.module('triberraarPiMonitorApp', [
     'storage',
     'time'
 ])
-    .config(function ($urlRouterProvider) {
+    .config(function ($urlRouterProvider, growlProvider) {
         $urlRouterProvider.otherwise('/dashboard');
+        growlProvider.globalTimeToLive(3000);
 
     })
     .run(function(timeDataService, cpuDataService, memoryDataService, networkDataService, storageDataService){

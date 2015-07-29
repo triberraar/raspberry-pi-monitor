@@ -4,6 +4,7 @@ angular.module('cpu', [
     'btford.socket-io',
     'ui.router',
     'chart.js',
+    'angular-growl',
     'util',
     'dashboard'
 ]).config(function ($stateProvider) {
@@ -17,7 +18,7 @@ angular.module('cpu', [
             templateUrl: '/components/cpu/cpu-history.html'
         });
 })
-    .factory('cpuDataService', function($timeout, socket, moment){
+    .factory('cpuDataService', function($timeout, socket, moment, growl){
         var _refreshInterval;
         var _cpuData = [];
         var _timeout;
@@ -57,7 +58,12 @@ angular.module('cpu', [
         }
 
         socket.on('cpu', function(data){
-            _cpuData.push({time: moment(), data: data});
+            if(data.error) {
+                console.error(data.error.message + ': ' + JSON.stringify(data.error.error));
+                growl.error(data.error.message);
+            } else {
+                _cpuData.push({time: moment(), data: data.content});
+            }
             if(!_paused) {
                 _timeout = $timeout(requery, _refreshInterval);
             }

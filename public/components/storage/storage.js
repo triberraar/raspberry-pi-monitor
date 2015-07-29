@@ -4,6 +4,7 @@ angular.module('storage', [
     'btford.socket-io',
     'ui.router',
     'chart.js',
+    'angular-growl',
     'util',
     'dashboard'
 ]).config(function ($stateProvider) {
@@ -13,7 +14,7 @@ angular.module('storage', [
             templateUrl: '/components/storage/storage.html'
         });
 })
-    .factory('storageDataService', function($timeout, socket, moment){
+    .factory('storageDataService', function($timeout, socket, growl){
         var _refreshInterval;
         var _storageData = {};
         var _timeout;
@@ -46,7 +47,11 @@ angular.module('storage', [
         }
 
         socket.on('storage', function(data){
-            _storageData = data;
+            if(data.error) {
+                growl.error(data.error.message);
+            } else {
+                _storageData = data.content;
+            }
             if(!_paused) {
                 _timeout = $timeout(requery, _refreshInterval);
             }

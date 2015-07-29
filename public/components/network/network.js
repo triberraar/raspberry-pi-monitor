@@ -4,6 +4,7 @@ angular.module('network', [
     'btford.socket-io',
     'ui.router',
     'chart.js',
+    'angular-growl',
     'util',
     'dashboard'
 ]).config(function ($stateProvider) {
@@ -17,7 +18,7 @@ angular.module('network', [
             templateUrl: '/components/network/network-history.html'
         });
 })
-    .factory('networkDataService', function($timeout, socket, moment){
+    .factory('networkDataService', function($timeout, socket, moment, growl){
         var _refreshInterval;
         var _networkData = [];
         var _timeout;
@@ -56,8 +57,12 @@ angular.module('network', [
             socket.emit('network');
         }
 
-        socket.on('network', function(data){
-            _networkData.push({time: moment(), data: data});
+        socket.on('network', function(data) {
+            if(data.error) {
+                growl.error(data.error.message);
+            } else {
+                _networkData.push({time: moment(), data: data.content});
+            }
             if(!_paused) {
                 _timeout = $timeout(requery, _refreshInterval);
             }

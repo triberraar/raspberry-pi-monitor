@@ -4,6 +4,7 @@ angular.module('memory', [
     'btford.socket-io',
     'ui.router',
     'chart.js',
+    'angular-growl',
     'util',
     'dashboard'
 ]).config(function ($stateProvider) {
@@ -17,7 +18,7 @@ angular.module('memory', [
             templateUrl: '/components/memory/memory-history.html'
         });
 })
-    .factory('memoryDataService', function($timeout, socket, moment){
+    .factory('memoryDataService', function($timeout, socket, moment, growl){
         var _refreshInterval;
         var _memoryData = [];
         var _timeout;
@@ -57,7 +58,12 @@ angular.module('memory', [
         }
 
         socket.on('memory', function(data){
-            _memoryData.push({time: moment(), data: data});
+            if(data.error) {
+                console.error(data.error.message + ': ' + JSON.stringify(data.error.error));
+                growl.error(data.error.message);
+            } else {
+                _memoryData.push({time: moment(), data: data.content});
+            }
             if(!_paused) {
                 _timeout = $timeout(requery, _refreshInterval);
             }
