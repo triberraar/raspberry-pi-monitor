@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Triberraar pi monitor</title>
+
+        <link rel="stylesheet" href="lib/angular-chart.js/dist/angular-chart.css">
+        <link rel="stylesheet" href="lib/components-font-awesome/css/font-awesome.css">
+        <link rel="stylesheet" href="css/cosmo.css"/>
+        <link rel="stylesheet" href="lib/angular-growl-v2/build/angular-growl.css">
+        <link rel="stylesheet" href="css/style.css"/>
+
+        <script src="lib/lodash/lodash.js"></script>
+        <script src="lib/moment/moment.js"></script>
+        <script src="lib/Chart.js/Chart.js"></script>
+        <script src="lib/socket.io-client/socket.io.js"></script>
+        <script src="lib/angular/angular.js"></script>
+        <script src="lib/angular-socket-io/socket.js"></script>
+        <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="lib/angular-chart.js/dist/angular-chart.js"></script>
+        <script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="lib/ngstorage/ngStorage.js"></script>
+        <script src="lib/angular-growl-v2/build/angular-growl.js"></script>
+
+        <script src="triberraar-pi-monitor-app.js"></script>
+        <script src="util.js"></script>
+        <script src="components/dashboard/dashboard.js"></script>
+        <script src="components/cpu/cpu.js"></script>
+        <script src="components/memory/memory.js"></script>
+        <script src="components/network/network.js"></script>
+        <script src="components/storage/storage.js"></script>
+        <script src="components/time/time.js"></script>
+
+    </head>
+    <body ng-app="triberraarPiMonitorApp">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <ul class="nav nav-sidebar">
+                        <li ui-sref-active="active"><a ui-sref="dashboard">Dashboard</a></li>
+                        <li ui-sref-active="active"><a ui-sref="time">Time</a></li>
+                        <li ui-sref-active="active"><a ui-sref="cpu">Cpu</a></li>
+                        <li ui-sref-active="active"><a ui-sref="memory">Memory</a></li>
+                        <li ui-sref-active="active"><a ui-sref="network">Network</a></li>
+                        <li ui-sref-active="active"><a ui-sref="storage">Storage</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <div growl></div>
+                    <div ui-view></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
