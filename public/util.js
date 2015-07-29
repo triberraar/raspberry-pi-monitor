@@ -15,7 +15,7 @@ angular.module('util',[
     .factory('sizeConverter', function () {
         function _convert(kiloBytes,decimals) {
             if(kiloBytes === 0) return '0 KB';
-            if(kiloBytes < 1) return kiloBytes.toFixed(2);
+            if(kiloBytes < 1) return kiloBytes.toFixed(2) + ' KB';
             var k = 1000;
             var dm = decimals + 1 || 3;
             var sizes = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
