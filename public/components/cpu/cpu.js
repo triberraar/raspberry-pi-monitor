@@ -63,14 +63,18 @@ angular.module('cpu', [
             }
         });
 
-        requery();
+        var _init = function() {
+            _refreshInterval = 5000;
+            requery();
+        };
 
         return {
             setRefreshInterval : _setRefreshInterval,
             getLatest: function() { return _cpuData[_cpuData.length -1];},
             getData: _getData,
             pause: _pause,
-            play: _play
+            play: _play,
+            init: _init
         };
     })
     .controller('CpuController', function($state, cpuDataService, favoriteService){

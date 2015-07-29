@@ -63,14 +63,18 @@ angular.module('memory', [
             }
         });
 
-        requery();
+        var _init = function() {
+            _refreshInterval = 5000;
+            requery();
+        };
 
         return {
             setRefreshInterval : _setRefreshInterval,
             getLatest: function() { return _memoryData[_memoryData.length -1];},
             getData: _getData,
             pause: _pause,
-            play: _play
+            play: _play,
+            init: _init
         };
     })
     .controller('MemoryController', function($state, filesize, favoriteService, memoryDataService){

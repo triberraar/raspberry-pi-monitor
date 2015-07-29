@@ -20,7 +20,8 @@ angular.module('time', [
         });
 
         return {
-            getData: function() { return _timeData;}
+            getData: function() { return _timeData;},
+            init: function() {}
         };
     })
     .controller('TimeController', function(moment, favoriteService, timeDataService){

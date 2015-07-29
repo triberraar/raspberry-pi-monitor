@@ -63,14 +63,18 @@ angular.module('network', [
             }
         });
 
-        requery();
+        var _init = function() {
+            _refreshInterval = 5000;
+            requery();
+        };
 
         return {
             setRefreshInterval : _setRefreshInterval,
             getLatest: function() { return _networkData[_networkData.length -1];},
             getData: _getData,
             pause: _pause,
-            play: _play
+            play: _play,
+            init: _init
         };
     })
     .controller('NetworkController', function($state, filesize, moment, favoriteService, networkDataService){

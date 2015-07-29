@@ -52,13 +52,17 @@ angular.module('storage', [
             }
         });
 
-        requery();
+        var _init = function() {
+            _refreshInterval = 5000;
+            requery();
+        };
 
         return {
             setRefreshInterval : _setRefreshInterval,
             getData: function() { return _storageData;},
             pause: _pause,
-            play: _play
+            play: _play,
+            init: _init
         };
     })
     .controller('StorageController', function(filesize, favoriteService, storageDataService){
