@@ -115,7 +115,7 @@ angular.module('memory', [
 
         _this.convertBytesToHumanReadable = function(value) {
             if(value) {
-                return sizeConverter.convert(value, 2);
+                return sizeConverter.convertToMb(value, true);
             }
         };
 
@@ -133,7 +133,7 @@ angular.module('memory', [
 
         init();
     })
-    .controller('MemoryHistoryController', function($scope, _, moment, filesize, memoryDataService) {
+    .controller('MemoryHistoryController', function($scope, _, moment, sizeConverter, memoryDataService) {
         var _this = this;
 
         function init() {
@@ -158,9 +158,9 @@ angular.module('memory', [
                 return value.format('DD/MM/YYYY, HH:mm:ss');
             });
             _this.data = [
-                _.map(_.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.total'), function(value) { return filesize(value * 1024, {output: 'object'}).value;}),
-                _.map(_.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.used'), function(value) { return filesize(value * 1024, {output: 'object'}).value;}),
-                _.map(_.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.free'), function(value) { return filesize(value * 1024, {output: 'object'}).value;})
+                _.map(_.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.total'), function(value) { return sizeConverter.convertToMb(value);}),
+                _.map(_.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.used'), function(value) { return sizeConverter.convertToMb(value);}),
+                _.map(_.pluck(memoryDataService.getData(_this.numberOfEntries.value), 'data.free'), function(value) { return sizeConverter.convertToMb(value);})
             ];
         }
 

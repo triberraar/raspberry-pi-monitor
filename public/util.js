@@ -22,7 +22,16 @@ angular.module('util',[
             var i = Math.floor(Math.log(kiloBytes) / Math.log(k));
             return (kiloBytes / Math.pow(k, i)).toPrecision(dm) + ' ' + sizes[i];
         }
+
+        function _convertToMb(kilobytes, postfix) {
+            if(postfix) {
+                return (kilobytes / 1000).toFixed(2) + ' MB';
+            } else {
+                return (kilobytes / 1000).toFixed(2);
+            }
+        }
         return {
-            convert: _convert
+            convert: _convert,
+            convertToMb: _convertToMb
         };
     });
