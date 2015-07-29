@@ -11,7 +11,22 @@ The back-end is written in javascript using Node.js. It uses some supporting jav
  * lodah
  * moment
  
-The back-end provides both a JSON Rest-api and websocket communication.
+The back-end provides both a JSON Rest-api and websocket communication. If an error occurs the rest api responds with 500 and looks like:
+```json
+{
+    "message": "The error message",
+    "error": <the original error object>
+}
+```
+If an error occurs during the websocket communication a response will look like this:
+```json
+{
+    "error": {
+        "message": "The error message",
+        "error": <the original error object>
+    }
+}
+```
 
 ## Front-end
 The front-end is also written in javascript using AngularJS. It uses some supporting javascript libraries:
@@ -61,7 +76,32 @@ The load average is gathered by reading the /proc/loadavg file.
 The temperature is gathered by reading the /sys/devices/virtual/thermal/thermal_zone0/temp file.
 
 ### Rest
-The cpu information can be queried one /cpu and looks like
+The cpu information can be queried on '/cpu' and looks like:
 ```json
-{"loadAvg":{"1min":0.4,"5min":0.47,"15min":0.45},"frequency":950,"temperature":48.15}
+{
+    "loadAvg":{
+        "1min":0.4,
+        "5min":0.47,
+        "15min":0.45
+    },
+    "frequency":950,
+    "temperature":48.15
+}
+```
+
+### Websocket
+The cpu information can be queried by sending the 'cpu' message and looks like:
+```json
+content:
+{
+    {
+        "loadAvg":{
+            "1min":0.4,
+            "5min":0.47,
+            "15min":0.45
+        },
+        "frequency":950,
+        "temperature":48.15
+    }
+}
 ```
