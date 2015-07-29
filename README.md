@@ -8,7 +8,7 @@ The back-end is written in javascript using Node.js. It uses some supporting jav
  * express
  * socket.io
  * async
- * lodah
+ * lodash
  * moment
  
 The back-end provides both a JSON Rest-api and websocket communication. If an error occurs the rest api responds with 500 and looks like:
@@ -28,6 +28,7 @@ If an error occurs during the websocket communication a response will look like 
 }
 ```
 
+Temperatures are reported in degrees celcius. Sizes are reported in kilobytes. Frequency is reported in megahertz. Uptime is reported in seconds.
 ## Front-end
 The front-end is also written in javascript using AngularJS. It uses some supporting javascript libraries:
 
@@ -41,7 +42,7 @@ The front-end is also written in javascript using AngularJS. It uses some suppor
  * ngstorage
  * angular-growl-v2
  
-Layout is done with Bootstrap and Font Awesome.
+Layout is done with Bootstrap and Font Awesome. The used theme is Cosmo.
 
 The front-end provides a page per monitored component and history for some. There is also a configurable dashboard, that is saved into local storage.
 
@@ -62,7 +63,7 @@ Configure the application in the config.json file. For the moment the only confi
 # Run
 Run the application by executing
   
-   sudo node triberraar-pi-monitor.js
+    sudo node triberraar-pi-monitor.js
    
 !!! Be sure to run as sudo as some functionality needs this !!!
 
@@ -206,3 +207,6 @@ The time informationis emitted to all connected sockets every second and looks l
     }
 }
 ```
+
+# TODO
+* Prettier UI
