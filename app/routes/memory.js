@@ -1,6 +1,8 @@
 'use strict';
 
-module.exports = function(app, memory) {
+var memory = require('./../controllers/memory/memory');
+
+module.exports = function(app) {
     app.get('/memory', function(req, res) {
         memory.getMemory(function(err, memoryData) {
             if(err) {

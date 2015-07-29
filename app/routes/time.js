@@ -1,6 +1,8 @@
 'use strict';
 
-module.exports = function(app, time) {
+var time = require('./../controllers/time/time');
+
+module.exports = function(app) {
     app.get('/time', function(req, res) {
         time.getTime(function(err, timeInfo) {
             if(err) {

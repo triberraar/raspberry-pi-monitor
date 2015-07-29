@@ -1,6 +1,8 @@
 'use strict';
 
-module.exports = function(app, network) {
+var network = require('./../controllers/network/network');
+
+module.exports = function(app) {
     app.get('/network', function(req, res) {
         network.getNetworkInfo(function(err, networkInfo) {
             if(err) {

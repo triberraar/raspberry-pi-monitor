@@ -1,6 +1,8 @@
 'use strict';
 
-module.exports = function(app, cpu) {
+var cpu = require('./../controllers/cpu/cpu');
+
+module.exports = function(app) {
     app.get('/cpu', function(req, res) {
         cpu.getCpuInfo(function(err, cpuInfo) {
             if(err) {
