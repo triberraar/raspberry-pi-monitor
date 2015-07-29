@@ -149,7 +149,7 @@ angular.module('cpu', [
                 []
             ];
             _this.loadAvgSeries = ['1min', '5min', '15min'];
-            _this.temperatureSeries = ['°C'];
+            _this.temperatureSeries = ['temperature (°C)'];
             _this.options = {animation: false};
 
             _this.numberOfEntriesList = [

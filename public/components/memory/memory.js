@@ -141,7 +141,7 @@ angular.module('memory', [
             _this.data = [
                 []
             ];
-            _this.series = ['total', 'used', 'free'];
+            _this.series = ['Total (MB)', 'Used (MB)', 'Free (MB)'];
             _this.options = {animation: false};
 
             _this.numberOfEntriesList = [
