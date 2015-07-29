@@ -28,32 +28,42 @@ require('./app/routes/time')(app,time);
 
 io.on('connection', function (socket) {
     socket.on('cpu', function() {
-        cpuInfo.getCpuInfo(function(cpuInfo) {
-            socket.emit('cpu', cpuInfo);
+        cpuInfo.getCpuInfo(function(err, cpuInfo) {
+            if(!err) {
+                socket.emit('cpu', cpuInfo);
+            }
         });
     });
 
     socket.on('memory', function() {
-        memory.getMemory(function(memoryData) {
-            socket.emit('memory', memoryData);
+        memory.getMemory(function(err, memoryData) {
+            if(!err) {
+                socket.emit('memory', memoryData);
+            }
         });
     });
 
     socket.on('network', function() {
-        network.getNetworkInfo(function(networkData) {
-            socket.emit('network', networkData);
+        network.getNetworkInfo(function(err, networkData) {
+            if(!err) {
+                socket.emit('network', networkData);
+            }
         });
     });
 
     socket.on('storage', function() {
-        storage.getStorageInfo(function(storageData) {
-            socket.emit('storage', storageData);
+        storage.getStorageInfo(function(err, storageData) {
+            if(!err) {
+                socket.emit('storage', storageData);
+            }
         });
     });
 });
 
 setInterval(function() {
-    time.getTime(function(timeData) {
-       io.emit('time', timeData);
+    time.getTime(function(err, timeData) {
+        if(!err) {
+            io.emit('time', timeData);
+        }
     });
 }, 1000);

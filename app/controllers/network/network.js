@@ -6,10 +6,9 @@ var fs = require('fs'),
 var readRX = function(callback) {
     fs.readFile('/sys/class/net/eth0/statistics/rx_bytes', {encoding: 'binary'}, function(err, data) {
         if(err) {
-            console.error('reading rx failed (are you running as sudo?): ' + JSON.stringify(err));
-            callback(err);
+            callback({message: 'Reading rx_bytes failed (are you running as sudo?)', error: err});
         } else {
-            callback(null, parseInt(data));
+            callback(undefined, parseInt(data));
         }
     });
 };
@@ -17,10 +16,9 @@ var readRX = function(callback) {
 var readTX = function(callback) {
     fs.readFile('/sys/class/net/eth0/statistics/tx_bytes', {encoding: 'binary'}, function(err, data) {
         if(err) {
-            console.error('reading tx failed (are you running as sudo?): ' + JSON.stringify(err));
-            callback(err);
+            callback({message: 'Reading tx_bytes failed (are you running as sudo?)', error: err});
         } else {
-            callback(null, parseInt(data));
+            callback(undefined, parseInt(data));
         }
     });
 };
@@ -31,9 +29,10 @@ exports.getNetworkInfo = function(callback) {
         readTX
     ], function(err, results){
         if(err) {
-            console.error('getMemory failed (are you running as sudo?): ', JSON.stringify(err));
+            console.error(err.message + ': ' + JSON.stringify(err.error));
+            callback(err);
         } else {
-            callback({rx: results[0], tx: results[1]});
+            callback(undefined, {rx: results[0], tx: results[1]});
         }
     });
 };

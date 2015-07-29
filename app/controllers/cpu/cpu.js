@@ -14,9 +14,10 @@ var getCpuInfo = function(callback) {
             temperature.getTemperature
         ], function (err, results) {
             if(err) {
-                console.error('error' + err);
+                console.error(err.message + ': ' + JSON.stringify(err.error));
+                callback(err);
             } else {
-                callback( {loadAvg: results[0], frequency: results[1], temperature: results[2]});
+                callback(undefined, {loadAvg: results[0], frequency: results[1], temperature: results[2]});
             }
         }
     );
