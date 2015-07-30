@@ -1,0 +1,321 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Triberraar-pi-monitor by triberraar</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Triberraar-pi-monitor</h1>
+        <p>A simple websocket and angular based application to monitor my raspberry pi</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/triberraar/triberraar-pi-monitor" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/triberraar/triberraar-pi-monitor/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/triberraar/triberraar-pi-monitor/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>
+<a id="triberraar-pi-monitor" class="anchor" href="#triberraar-pi-monitor" aria-hidden="true"><span class="octicon octicon-link"></span></a>triberraar-pi-monitor</h1>
+
+<p>A simple websocket and angular based application to monitor a raspberry pi (2).</p>
+
+<h1>
+<a id="architecture" class="anchor" href="#architecture" aria-hidden="true"><span class="octicon octicon-link"></span></a>Architecture</h1>
+
+<h2>
+<a id="back-end" class="anchor" href="#back-end" aria-hidden="true"><span class="octicon octicon-link"></span></a>Back-end</h2>
+
+<p>The back-end is written in javascript using Node.js. It uses some supporting javascript libraries:</p>
+
+<ul>
+<li>express</li>
+<li>socket.io</li>
+<li>async</li>
+<li>lodash</li>
+<li>moment</li>
+</ul>
+
+<p>The back-end provides both a JSON Rest-api and websocket communication. If an error occurs the rest api responds with 500 and looks like:</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>The error message<span class="pl-pds">"</span></span>,
+    <span class="pl-s"><span class="pl-pds">"</span>error<span class="pl-pds">"</span></span>: <span class="pl-ii">&lt;the</span> <span class="pl-ii">original</span> <span class="pl-ii">error</span> <span class="pl-ii">object&gt;</span>
+}</pre></div>
+
+<p>If an error occurs during the websocket communication a response will look like this:</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>error<span class="pl-pds">"</span></span>: {
+        <span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>The error message<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>error<span class="pl-pds">"</span></span>: <span class="pl-ii">&lt;the</span> <span class="pl-ii">original</span> <span class="pl-ii">error</span> <span class="pl-ii">object&gt;</span>
+    }
+}</pre></div>
+
+<p>Temperatures are reported in degrees celcius. Sizes are reported in kilobytes. Frequency is reported in megahertz. Uptime is reported in seconds.</p>
+
+<h2>
+<a id="front-end" class="anchor" href="#front-end" aria-hidden="true"><span class="octicon octicon-link"></span></a>Front-end</h2>
+
+<p>The front-end is also written in javascript using AngularJS. It uses some supporting javascript libraries:</p>
+
+<ul>
+<li>socket.io-client</li>
+<li>angular-socket-io</li>
+<li>angular-ui-router</li>
+<li>moment</li>
+<li>lodash</li>
+<li>angular-chart.js</li>
+<li>angular-bootstrap</li>
+<li>ngstorage</li>
+<li>angular-growl-v2</li>
+</ul>
+
+<p>Layout is done with Bootstrap and Font Awesome. The used theme is Cosmo.</p>
+
+<p>The front-end provides a page per monitored component and history for some. There is also a configurable dashboard, that is saved into local storage.</p>
+
+<h1>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h1>
+
+<p>Please make sure node and npm are installed. Also install bower globally.
+Install by running</p>
+
+<pre><code>npm install
+</code></pre>
+
+<p>and</p>
+
+<pre><code>bower install
+</code></pre>
+
+<p>Installation done :)</p>
+
+<h1>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h1>
+
+<p>Configure the application in the config.json file. For the moment the only configuration is the port used (standard 7076).</p>
+
+<h1>
+<a id="run" class="anchor" href="#run" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run</h1>
+
+<p>Run the application by executing</p>
+
+<pre><code>sudo node triberraar-pi-monitor.js
+</code></pre>
+
+<p>!!! Be sure to run as sudo as some functionality needs this !!!</p>
+
+<h1>
+<a id="functionality" class="anchor" href="#functionality" aria-hidden="true"><span class="octicon octicon-link"></span></a>Functionality</h1>
+
+<h2>
+<a id="cpu" class="anchor" href="#cpu" aria-hidden="true"><span class="octicon octicon-link"></span></a>CPU</h2>
+
+<h3>
+<a id="commands" class="anchor" href="#commands" aria-hidden="true"><span class="octicon octicon-link"></span></a>Commands</h3>
+
+<p>The cpu frequency is gathered by reading the '/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_cur_freq' file.</p>
+
+<p>The load average is gathered by reading the '/proc/loadavg' file.</p>
+
+<p>The temperature is gathered by reading the '/sys/devices/virtual/thermal/thermal_zone0/temp' file.</p>
+
+<h3>
+<a id="rest" class="anchor" href="#rest" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rest</h3>
+
+<p>The cpu information can be queried on '/cpu' and looks like:</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>loadAvg<span class="pl-pds">"</span></span>:{
+        <span class="pl-s"><span class="pl-pds">"</span>1min<span class="pl-pds">"</span></span>:<span class="pl-c1">0.4</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>5min<span class="pl-pds">"</span></span>:<span class="pl-c1">0.47</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>15min<span class="pl-pds">"</span></span>:<span class="pl-c1">0.45</span>
+    },
+    <span class="pl-s"><span class="pl-pds">"</span>frequency<span class="pl-pds">"</span></span>:<span class="pl-c1">950</span>,
+    <span class="pl-s"><span class="pl-pds">"</span>temperature<span class="pl-pds">"</span></span>:<span class="pl-c1">48.15</span>
+}</pre></div>
+
+<h3>
+<a id="websocket" class="anchor" href="#websocket" aria-hidden="true"><span class="octicon octicon-link"></span></a>Websocket</h3>
+
+<p>The cpu information can be queried by sending the 'cpu' message and looks like:</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>content<span class="pl-pds">"</span></span>: {
+        <span class="pl-s"><span class="pl-pds">"</span>loadAvg<span class="pl-pds">"</span></span>:{
+            <span class="pl-s"><span class="pl-pds">"</span>1min<span class="pl-pds">"</span></span>:<span class="pl-c1">0.4</span>,
+            <span class="pl-s"><span class="pl-pds">"</span>5min<span class="pl-pds">"</span></span>:<span class="pl-c1">0.47</span>,
+            <span class="pl-s"><span class="pl-pds">"</span>15min<span class="pl-pds">"</span></span>:<span class="pl-c1">0.45</span>
+        },
+        <span class="pl-s"><span class="pl-pds">"</span>frequency<span class="pl-pds">"</span></span>:<span class="pl-c1">950</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>temperature<span class="pl-pds">"</span></span>:<span class="pl-c1">48.15</span>
+    }
+}</pre></div>
+
+<h2>
+<a id="memory" class="anchor" href="#memory" aria-hidden="true"><span class="octicon octicon-link"></span></a>Memory</h2>
+
+<h3>
+<a id="commands-1" class="anchor" href="#commands-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Commands</h3>
+
+<p>The memory information is gathered by reading the '/proc/meminfo' file.</p>
+
+<h3>
+<a id="rest-1" class="anchor" href="#rest-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rest</h3>
+
+<p>The memory information can be queried on '/memory' and looks like:</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>total<span class="pl-pds">"</span></span>:<span class="pl-c1">447824</span>,
+    <span class="pl-s"><span class="pl-pds">"</span>free<span class="pl-pds">"</span></span>:<span class="pl-c1">51744</span>,
+    <span class="pl-s"><span class="pl-pds">"</span>used<span class="pl-pds">"</span></span>:<span class="pl-c1">396080</span>
+}</pre></div>
+
+<h3>
+<a id="websocket-1" class="anchor" href="#websocket-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Websocket</h3>
+
+<p>The memory information can be queried by sending the 'memory' message and looks like:</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>content<span class="pl-pds">"</span></span>: {
+        <span class="pl-s"><span class="pl-pds">"</span>total<span class="pl-pds">"</span></span>:<span class="pl-c1">447824</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>free<span class="pl-pds">"</span></span>:<span class="pl-c1">51744</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>used<span class="pl-pds">"</span></span>:<span class="pl-c1">396080</span>
+    }
+}</pre></div>
+
+<h2>
+<a id="network" class="anchor" href="#network" aria-hidden="true"><span class="octicon octicon-link"></span></a>Network</h2>
+
+<h3>
+<a id="commands-2" class="anchor" href="#commands-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Commands</h3>
+
+<p>The network information is gathered by reading the '/sys/class/net/eth0/statistics/rx_bytes' and '/sys/class/net/eth0/statistics/tx_bytes' files.</p>
+
+<h3>
+<a id="rest-2" class="anchor" href="#rest-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rest</h3>
+
+<p>The network information can be queried on '/network' and looks like:</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>rx<span class="pl-pds">"</span></span>:<span class="pl-c1">518892</span>,
+    <span class="pl-s"><span class="pl-pds">"</span>tx<span class="pl-pds">"</span></span>:<span class="pl-c1">518891.808</span>
+}</pre></div>
+
+<h3>
+<a id="websocket-2" class="anchor" href="#websocket-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Websocket</h3>
+
+<p>The network information can be queried by sending the 'network' message and looks like:</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>content<span class="pl-pds">"</span></span>: {
+        <span class="pl-s"><span class="pl-pds">"</span>rx<span class="pl-pds">"</span></span>:<span class="pl-c1">518892</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>tx<span class="pl-pds">"</span></span>:<span class="pl-c1">518891.808</span>
+    }
+}</pre></div>
+
+<h2>
+<a id="storage" class="anchor" href="#storage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Storage</h2>
+
+<h3>
+<a id="commands-3" class="anchor" href="#commands-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Commands</h3>
+
+<p>The storage information is gathered by executing the 'df' command.</p>
+
+<h3>
+<a id="rest-3" class="anchor" href="#rest-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rest</h3>
+
+<p>The storage information can be queried on '/storage' and looks like:</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>total<span class="pl-pds">"</span></span>:<span class="pl-c1">29630532</span>,
+    <span class="pl-s"><span class="pl-pds">"</span>used<span class="pl-pds">"</span></span>:<span class="pl-c1">4710528</span>,
+    <span class="pl-s"><span class="pl-pds">"</span>free<span class="pl-pds">"</span></span>:<span class="pl-c1">23391788</span>,
+    <span class="pl-s"><span class="pl-pds">"</span>reserved<span class="pl-pds">"</span></span>:<span class="pl-c1">1528216</span>
+}</pre></div>
+
+<h3>
+<a id="websocket-3" class="anchor" href="#websocket-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Websocket</h3>
+
+<p>The storage information can be queried by sending the 'storage' message and looks like:</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>content<span class="pl-pds">"</span></span>: {
+        <span class="pl-s"><span class="pl-pds">"</span>total<span class="pl-pds">"</span></span>:<span class="pl-c1">29630532</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>used<span class="pl-pds">"</span></span>:<span class="pl-c1">4710528</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>free<span class="pl-pds">"</span></span>:<span class="pl-c1">23391788</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>reserved<span class="pl-pds">"</span></span>:<span class="pl-c1">1528216</span>
+    }
+}</pre></div>
+
+<h2>
+<a id="time" class="anchor" href="#time" aria-hidden="true"><span class="octicon octicon-link"></span></a>Time</h2>
+
+<h3>
+<a id="commands-4" class="anchor" href="#commands-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Commands</h3>
+
+<p>The time information is gathered by reading the '/proc/uptime' file.</p>
+
+<h3>
+<a id="rest-4" class="anchor" href="#rest-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rest</h3>
+
+<p>The time information can be queried on '/time' and looks like:</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>uptime<span class="pl-pds">"</span></span>:<span class="pl-c1">9524454970</span>,
+    <span class="pl-s"><span class="pl-pds">"</span>current<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>2015-07-29T20:54:57.989Z<span class="pl-pds">"</span></span>
+}</pre></div>
+
+<h3>
+<a id="websocket-4" class="anchor" href="#websocket-4" aria-hidden="true"><span class="octicon octicon-link"></span></a>Websocket</h3>
+
+<p>The time informationis emitted to all connected sockets every second and looks like:</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s"><span class="pl-pds">"</span>content<span class="pl-pds">"</span></span>: {
+        <span class="pl-s"><span class="pl-pds">"</span>uptime<span class="pl-pds">"</span></span>:<span class="pl-c1">9524454970</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>current<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>2015-07-29T20:54:57.989Z<span class="pl-pds">"</span></span>
+    }
+}</pre></div>
+
+<h1>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO</h1>
+
+<ul>
+<li>Prettier UI</li>
+</ul>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/triberraar">triberraar</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
