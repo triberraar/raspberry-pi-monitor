@@ -18,9 +18,9 @@
         <div class="form-group">
             <div class="row">
                 <label class="col-sm-3 control-label">Total: <span class="badge">{{storageController.convertBytesToHumanReadable(storageController.getData().total)}}</span></label>
-                <label class="col-sm-3 control-label">Free: <span class="badge">{{storageController.convertBytesToHumanReadable(storageController.getData().free)}} ({{storageController.getFreePercentage(storageController.getData().total,storageController.getData().free)}}%)</span></label>
-                <label class="col-sm-3 control-label">Used: <span class="badge">{{storageController.convertBytesToHumanReadable(storageController.getData().used)}} ({{storageController.getFreePercentage(storageController.getData().total,storageController.getData().used)}}%)</span></label>
-                <label class="col-sm-3 control-label">Reserved: <span class="badge">{{storageController.convertBytesToHumanReadable(storageController.getData().reserved)}} ({{storageController.getFreePercentage(storageController.getData().total,storageController.getData().reserved)}}%)</span></label>
+                <label class="col-sm-3 control-label">Free: <span class="badge">{{storageController.convertBytesToHumanReadable(storageController.getData().free)}} ({{storageController.getPercentage(storageController.getData().total,storageController.getData().free)}}%)</span></label>
+                <label class="col-sm-3 control-label">Used: <span class="badge">{{storageController.convertBytesToHumanReadable(storageController.getData().used)}} ({{storageController.getPercentage(storageController.getData().total,storageController.getData().used)}}%)</span></label>
+                <label class="col-sm-3 control-label">Reserved: <span class="badge">{{storageController.convertBytesToHumanReadable(storageController.getData().reserved)}} ({{storageController.getPercentage(storageController.getData().total,storageController.getData().reserved)}}%)</span></label>
             </div>
         </div>
     </form>
@@ -28,9 +28,9 @@
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
             <progress>
-                <bar class="progress-striped" value="storageController.getFreePercentage(storageController.getData().total,storageController.getData().reserved)" type="info"><span>Reserved</span></bar>
-                <bar class="progress-striped" value="storageController.getFreePercentage(storageController.getData().total,storageController.getData().used)" type="warning"><span>Used</span></bar>
-                <bar class="progress-striped" value="storageController.getFreePercentage(storageController.getData().total,storageController.getData().free)" type="success"><span>Free</span></bar>
+                <bar class="progress-striped" value="storageController.getPercentage(storageController.getData().total,storageController.getData().reserved)" type="info"><span>Reserved</span></bar>
+                <bar class="progress-striped" value="storageController.getPercentage(storageController.getData().total,storageController.getData().used)" type="warning"><span>Used</span></bar>
+                <bar class="progress-striped" value="storageController.getPercentage(storageController.getData().total,storageController.getData().free)" type="success"><span>Free</span></bar>
             </progress>
         </div>
     </div>
