@@ -18,8 +18,8 @@
         <div class="form-group">
             <div class="row">
                 <label class="col-sm-3 control-label">Total: <span class="badge">{{memoryController.convertBytesToHumanReadable(memoryController.getLatest().data.total)}}</span></label>
-                <label class="col-sm-3 control-label">Free: <span class="badge">{{memoryController.convertBytesToHumanReadable(memoryController.getLatest().data.free)}} ({{memoryController.getFreePercentage(memoryController.getLatest().data.total,memoryController.getLatest().data.free)}}%)</span></label>
-                <label class="col-sm-3 control-label">Used: <span class="badge">{{memoryController.convertBytesToHumanReadable(memoryController.getLatest().data.used)}} ({{memoryController.getFreePercentage(memoryController.getLatest().data.total,memoryController.getLatest().data.used)}}%)</span></label>
+                <label class="col-sm-3 control-label">Free: <span class="badge">{{memoryController.convertBytesToHumanReadable(memoryController.getLatest().data.free)}} ({{memoryController.getPercentage(memoryController.getLatest().data.total,memoryController.getLatest().data.free)}}%)</span></label>
+                <label class="col-sm-3 control-label">Used: <span class="badge">{{memoryController.convertBytesToHumanReadable(memoryController.getLatest().data.used)}} ({{memoryController.getPercentage(memoryController.getLatest().data.total,memoryController.getLatest().data.used)}}%)</span></label>
             </div>
         </div>
     </form>
@@ -27,8 +27,8 @@
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
             <progress>
-                <bar class="progress-striped" value="memoryController.getFreePercentage(memoryController.getLatest().data.total,memoryController.getLatest().data.used)" type="warning"><span>Used</span></bar>
-                <bar class="progress-striped" value="memoryController.getFreePercentage(memoryController.getLatest().data.total,memoryController.getLatest().data.free)" type="success">Free</bar>
+                <bar class="progress-striped" value="memoryController.getPercentage(memoryController.getLatest().data.total,memoryController.getLatest().data.used)" type="warning"><span>Used</span></bar>
+                <bar class="progress-striped" value="memoryController.getPercentage(memoryController.getLatest().data.total,memoryController.getLatest().data.free)" type="success">Free</bar>
             </progress>
         </div>
     </div>

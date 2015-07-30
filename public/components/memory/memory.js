@@ -119,8 +119,8 @@ angular.module('memory', [
             }
         };
 
-        _this.getFreePercentage = function(total, free) {
-            return ((free / total) * 100).toFixed(2);
+        _this.getPercentage = function(total, free) {
+            return (Math.floor((free / total) * 10000) / 100).toFixed(2);
         };
 
         _this.isFavorite = function() {
