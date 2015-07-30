@@ -63,6 +63,9 @@ angular.module('memory', [
                 growl.error(data.error.message);
             } else {
                 _memoryData.push({time: moment(), data: data.content});
+                if (_memoryData.length > 100) {
+                    _memoryData = _memoryData.slice(_memoryData.length - 100);
+                }
             }
             if(!_paused) {
                 _timeout = $timeout(requery, _refreshInterval);
@@ -148,7 +151,7 @@ angular.module('memory', [
                 {caption: '5', value: 5},
                 {caption: '10', value: 10},
                 {caption: '15', value: 15},
-                {caption: 'all', value: undefined}
+                {caption: 'max (100)', value: 100}
             ];
             _this.numberOfEntries=_this.numberOfEntriesList[1];
         }

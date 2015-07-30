@@ -62,6 +62,9 @@ angular.module('network', [
                 growl.error(data.error.message);
             } else {
                 _networkData.push({time: moment(), data: data.content});
+                if (_networkData.length > 100) {
+                    _networkData = _networkData.slice(_networkData.length - 100);
+                }
             }
             if(!_paused) {
                 _timeout = $timeout(requery, _refreshInterval);
@@ -173,7 +176,7 @@ angular.module('network', [
                 {caption: '5', value: 5},
                 {caption: '10', value: 10},
                 {caption: '15', value: 15},
-                {caption: 'all', value: undefined}
+                {caption: 'max (100)', value: 100}
             ];
             _this.numberOfEntries=_this.numberOfEntriesList[1];
         }
