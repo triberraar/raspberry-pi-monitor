@@ -1,7 +1,7 @@
 {
   "name": "raspberry-pi-monitor",
   "description": "Webbapp to monitor a raspberry pi",
-  "version": "1.1.0",
+  "version": "1.1.1-SNAPSHOT",
   "author": "Geert 'triberraar' Olaerts",
   "dependencies": {
     "async": "^1.4.0",
