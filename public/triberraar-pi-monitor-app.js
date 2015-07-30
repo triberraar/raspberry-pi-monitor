@@ -8,6 +8,7 @@ angular.module('triberraarPiMonitorApp', [
     'ngStorage',
     'angular-growl',
     'util',
+    'refreshInterval',
     'dashboard',
     'cpu',
     'memory',
