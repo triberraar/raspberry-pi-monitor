@@ -1,6 +1,27 @@
 # triberraar-pi-monitor
 A simple websocket and angular based application to monitor a raspberry pi (2).
 
+# Install
+Please make sure node and npm are installed. Also install bower globally.
+Install by running
+
+    npm install
+and
+
+    bower install
+
+Installation done :)
+
+# Configuration
+Configure the application in the config.json file. For the moment the only configuration is the port used (standard 7076).
+
+# Run
+Run the application by executing
+  
+    sudo node triberraar-pi-monitor.js
+   
+!!! Be sure to run as sudo as some functionality needs this !!!
+
 # Architecture
 ## Back-end
 The back-end is written in javascript using Node.js. It uses some supporting javascript libraries:
@@ -45,27 +66,6 @@ The front-end is also written in javascript using AngularJS. It uses some suppor
 Layout is done with Bootstrap and Font Awesome. The used theme is Cosmo.
 
 The front-end provides a page per monitored component and history for some. There is also a configurable dashboard, that is saved into local storage.
-
-# Install
-Please make sure node and npm are installed. Also install bower globally.
-Install by running
-
-    npm install
-and
-
-    bower install
-
-Installation done :)
-
-# Configuration
-Configure the application in the config.json file. For the moment the only configuration is the port used (standard 7076).
-
-# Run
-Run the application by executing
-  
-    sudo node triberraar-pi-monitor.js
-   
-!!! Be sure to run as sudo as some functionality needs this !!!
 
 # Functionality
 ## CPU
