@@ -1,5 +1,6 @@
-# [triberraar-pi-monitor] (http://triberraar.github.io/triberraar-pi-monitor/)
+# triberraar-pi-monitor 
 A simple websocket and angular based application to monitor a raspberry pi (2).
+See (http://triberraar.github.io/triberraar-pi-monitor/).
 
 # Install
 Please make sure node and npm are installed. Also install bower globally.
