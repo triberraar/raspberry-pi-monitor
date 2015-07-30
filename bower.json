@@ -1,7 +1,7 @@
 {
   "name": "raspberry-pi-monitor",
-  "version": "1.0.2-SNAPSHOT",
-  "homepage": "https://github.com/triberraar/raspberry-pi-monitor",
+  "version": "1.0.2",
+  "homepage": "https://github.com/triberraar/triberraar-pi-monitor",
   "authors": [
     "Geert 'triberraar' Olaerts"
   ],
