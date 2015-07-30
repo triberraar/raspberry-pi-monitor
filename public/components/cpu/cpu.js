@@ -6,7 +6,8 @@ angular.module('cpu', [
     'chart.js',
     'angular-growl',
     'util',
-    'dashboard'
+    'dashboard',
+    'refreshInterval'
 ]).config(function ($stateProvider) {
     $stateProvider
         .state('cpu', {
@@ -18,7 +19,7 @@ angular.module('cpu', [
             templateUrl: '/components/cpu/cpu-history.html'
         });
 })
-    .factory('cpuDataService', function($timeout, socket, moment, growl){
+    .factory('cpuDataService', function($timeout, socket, moment, growl, refreshIntervalService){
         var _refreshInterval;
         var _cpuData = [];
         var _timeout;
@@ -29,7 +30,7 @@ angular.module('cpu', [
             if(_timeout) {
                 $timeout.cancel(_timeout);
                 if(!_paused) {
-                    _timeout = $timeout(requery, _refreshInterval);
+                    _timeout = $timeout(requery, _refreshInterval.value);
                 }
             }
         };
@@ -62,19 +63,23 @@ angular.module('cpu', [
                 growl.error(data.error.message);
             } else {
                 _cpuData.push({time: moment(), data: data.content});
+                if (_cpuData.length > 100) {
+                    _cpuData = _cpuData.slice(_cpuData.length - 100);
+                }
             }
             if(!_paused) {
-                _timeout = $timeout(requery, _refreshInterval);
+                _timeout = $timeout(requery, _refreshInterval.value);
             }
         });
 
         var _init = function() {
-            _refreshInterval = 5000;
+            _refreshInterval = refreshIntervalService.getDefault();
             requery();
         };
 
         return {
             setRefreshInterval : _setRefreshInterval,
+            getRefreshInterval: function() { return _refreshInterval; },
             getLatest: function() { return _cpuData[_cpuData.length -1];},
             getData: _getData,
             pause: _pause,
@@ -82,25 +87,16 @@ angular.module('cpu', [
             init: _init
         };
     })
-    .controller('CpuController', function($state, cpuDataService, favoriteService){
+    .controller('CpuController', function($state, cpuDataService, favoriteService, refreshIntervalService){
         var _this = this;
 
         function init() {
-            _this.refreshIntervals = [
-                {caption: 'second', value: 1000},
-                {caption: '5 seconds', value: 5000},
-                {caption: '15 seconds', value: 15000},
-                {caption: '30 seconds', value: 30000},
-                {caption: 'minute', value: 60000},
-                {caption: '5 minutes', value: 300000},
-                {caption: '15 minutes', value: 900000}
-            ];
-            _this.refreshInterval=_this.refreshIntervals[1];
-            cpuDataService.setRefreshInterval( _this.refreshInterval.value);
+            _this.refreshIntervals = refreshIntervalService.getAll();
+            _this.refreshInterval = cpuDataService.getRefreshInterval();
         }
 
         _this.refreshIntervalChanged = function() {
-            cpuDataService.setRefreshInterval(_this.refreshInterval.value);
+            cpuDataService.setRefreshInterval(_this.refreshInterval);
         };
 
         _this.getLatest = cpuDataService.getLatest;
@@ -156,7 +152,7 @@ angular.module('cpu', [
                 {caption: '5', value: 5},
                 {caption: '10', value: 10},
                 {caption: '15', value: 15},
-                {caption: 'all', value: undefined}
+                {caption: 'max (100)', value: 100}
             ];
             _this.numberOfEntries=_this.numberOfEntriesList[1];
         }

@@ -6,6 +6,7 @@ angular.module('storage', [
     'chart.js',
     'angular-growl',
     'util',
+    'refreshInterval',
     'dashboard'
 ]).config(function ($stateProvider) {
     $stateProvider
@@ -14,7 +15,7 @@ angular.module('storage', [
             templateUrl: '/components/storage/storage.html'
         });
 })
-    .factory('storageDataService', function($timeout, socket, growl){
+    .factory('storageDataService', function($timeout, socket, growl, refreshIntervalService){
         var _refreshInterval;
         var _storageData = {};
         var _timeout;
@@ -25,7 +26,7 @@ angular.module('storage', [
             if(_timeout) {
                 $timeout.cancel(_timeout);
                 if(!_paused) {
-                    _timeout = $timeout(requery, _refreshInterval);
+                    _timeout = $timeout(requery, _refreshInterval.value);
                 }
             }
         };
@@ -53,42 +54,34 @@ angular.module('storage', [
                 _storageData = data.content;
             }
             if(!_paused) {
-                _timeout = $timeout(requery, _refreshInterval);
+                _timeout = $timeout(requery, _refreshInterval.value);
             }
         });
 
         var _init = function() {
-            _refreshInterval = 5000;
+            _refreshInterval = refreshIntervalService.getDefault();
             requery();
         };
 
         return {
             setRefreshInterval : _setRefreshInterval,
+            getRefreshInterval: function() { return _refreshInterval; },
             getData: function() { return _storageData;},
             pause: _pause,
             play: _play,
             init: _init
         };
     })
-    .controller('StorageController', function(sizeConverter, favoriteService, storageDataService){
+    .controller('StorageController', function(sizeConverter, favoriteService, storageDataService, refreshIntervalService){
         var _this = this;
 
         function init() {
-            _this.refreshIntervals = [
-                {caption: 'second', value: 1000},
-                {caption: '5 seconds', value: 5000},
-                {caption: '15 seconds', value: 15000},
-                {caption: '30 seconds', value: 30000},
-                {caption: 'minute', value: 60000},
-                {caption: '5 minutes', value: 300000},
-                {caption: '15 minutes', value: 900000}
-            ];
-            _this.refreshInterval=_this.refreshIntervals[1];
-            storageDataService.setRefreshInterval( _this.refreshInterval.value);
+            _this.refreshIntervals = refreshIntervalService.getAll();
+            _this.refreshInterval = storageDataService.getRefreshInterval();
         }
 
         _this.refreshIntervalChanged = function() {
-            storageDataService.setRefreshInterval(_this.refreshInterval.value);
+            storageDataService.setRefreshInterval(_this.refreshInterval);
         };
 
         _this.getData = storageDataService.getData;

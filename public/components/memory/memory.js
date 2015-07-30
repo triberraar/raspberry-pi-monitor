@@ -6,6 +6,7 @@ angular.module('memory', [
     'chart.js',
     'angular-growl',
     'util',
+    'refreshInterval',
     'dashboard'
 ]).config(function ($stateProvider) {
     $stateProvider
@@ -18,7 +19,7 @@ angular.module('memory', [
             templateUrl: '/components/memory/memory-history.html'
         });
 })
-    .factory('memoryDataService', function($timeout, socket, moment, growl){
+    .factory('memoryDataService', function($timeout, socket, moment, growl, refreshIntervalService){
         var _refreshInterval;
         var _memoryData = [];
         var _timeout;
@@ -29,7 +30,7 @@ angular.module('memory', [
             if(_timeout) {
                 $timeout.cancel(_timeout);
                 if(!_paused) {
-                    _timeout = $timeout(requery, _refreshInterval);
+                    _timeout = $timeout(requery, _refreshInterval.value);
                 }
             }
         };
@@ -63,19 +64,23 @@ angular.module('memory', [
                 growl.error(data.error.message);
             } else {
                 _memoryData.push({time: moment(), data: data.content});
+                if (_memoryData.length > 100) {
+                    _memoryData = _memoryData.slice(_memoryData.length - 100);
+                }
             }
             if(!_paused) {
-                _timeout = $timeout(requery, _refreshInterval);
+                _timeout = $timeout(requery, _refreshInterval.value);
             }
         });
 
         var _init = function() {
-            _refreshInterval = 5000;
+            _refreshInterval = refreshIntervalService.getDefault();
             requery();
         };
 
         return {
             setRefreshInterval : _setRefreshInterval,
+            getRefreshInterval: function() { return _refreshInterval; },
             getLatest: function() { return _memoryData[_memoryData.length -1];},
             getData: _getData,
             pause: _pause,
@@ -83,25 +88,16 @@ angular.module('memory', [
             init: _init
         };
     })
-    .controller('MemoryController', function($state, sizeConverter, favoriteService, memoryDataService){
+    .controller('MemoryController', function($state, sizeConverter, favoriteService, memoryDataService, refreshIntervalService){
         var _this = this;
 
         function init() {
-            _this.refreshIntervals = [
-                {caption: 'second', value: 1000},
-                {caption: '5 seconds', value: 5000},
-                {caption: '15 seconds', value: 15000},
-                {caption: '30 seconds', value: 30000},
-                {caption: 'minute', value: 60000},
-                {caption: '5 minutes', value: 300000},
-                {caption: '15 minutes', value: 900000}
-            ];
-            _this.refreshInterval=_this.refreshIntervals[1];
-            memoryDataService.setRefreshInterval( _this.refreshInterval.value);
+            _this.refreshIntervals = refreshIntervalService.getAll();
+            _this.refreshInterval = memoryDataService.getRefreshInterval();
         }
 
         _this.refreshIntervalChanged = function() {
-            memoryDataService.setRefreshInterval(_this.refreshInterval.value);
+            memoryDataService.setRefreshInterval(_this.refreshInterval);
         };
 
         _this.getLatest = memoryDataService.getLatest;
@@ -148,7 +144,7 @@ angular.module('memory', [
                 {caption: '5', value: 5},
                 {caption: '10', value: 10},
                 {caption: '15', value: 15},
-                {caption: 'all', value: undefined}
+                {caption: 'max (100)', value: 100}
             ];
             _this.numberOfEntries=_this.numberOfEntriesList[1];
         }
